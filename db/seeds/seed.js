@@ -1,6 +1,5 @@
-const db = require('../connection');
-const format = require('pg-format');
-
+const db = require("../connection");
+const format = require("pg-format");
 
 const seed = ({ geodata, userData }) => {
   return db
@@ -22,26 +21,23 @@ const seed = ({ geodata, userData }) => {
 				locations text[][], 
 			);`);
 
-      return Promise.all([godataTablePromise, geodataTablePromise]);
+      return Promise.all([geodataTablePromise, geodataTablePromise]);
     })
-     .then(() => {
+    .then(() => {
       const insertGeoDataQueryStr = format(
-        'INSERT INTO categories (slug, description) VALUES %L;',
-        geodata.map(({ slug }) => [slug])
+        "INSERT INTO geodata (locations) VALUES %L;",
+        geodata.map(({ locations }) => [locations])
       );
-      const categoriesPromise = db.query(insertCategoriesQueryStr);
+      const geoPromise = db.query(insertGeoDataQueryStr);
 
       const insertUsersQueryStr = format(
-        'INSERT INTO users (user_id, password, username) VALUES %L;',
-        userData.map(({ username, password }) => [
-          username,
-          password
-        ])
+        "INSERT INTO users (user_id, password, username) VALUES %L;",
+        userData.map(({ username, password }) => [username, password])
       );
       const usersPromise = db.query(insertUsersQueryStr);
 
-      return Promise.all([categoriesPromise, usersPromise]);
-    })
-}
+      return Promise.all([geoPromise, usersPromise]);
+    });
+};
 
 module.exports = seed;
