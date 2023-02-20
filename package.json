@@ -1,7 +1,7 @@
 {
-  "name": "be-nc-games",
+  "name": "be-fog-o-war",
   "version": "1.0.0",
-  "description": "bc-project",
+  "description": "bc-project-fogOWar",
   "main": "listen.js",
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
