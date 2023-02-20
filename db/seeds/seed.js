@@ -19,7 +19,7 @@ const seed = ({ geodata, userData }) => {
       const geodataTablePromise = db.query(`
 			CREATE TABLE geodata (
         location_id SERIAL PRIMARY KEY
-				locations text[][], 
+				locations INT[][], 
         user_id INT REFERENCES users(user_id) NOT NULL,
 			);`);
 
