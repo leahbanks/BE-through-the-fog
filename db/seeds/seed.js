@@ -1,11 +1,12 @@
 const db = require("../connection");
 const format = require("pg-format");
 
-const seed = ({ geodata, userData }) => {
+const seed = ({ geoData, userData }) => {
+  console.log(geoData);
   return db
-    .query(`DROP TABLE IF EXISTS users;`)
+    .query(`DROP TABLE IF EXISTS geodata;`)
     .then(() => {
-      return db.query(`DROP TABLE IF EXISTS GEOdata;`);
+      return db.query(`DROP TABLE IF EXISTS users;`);
     })
     .then(() => {
       const usersTablePromise = db.query(`
@@ -20,20 +21,20 @@ const seed = ({ geodata, userData }) => {
 			CREATE TABLE geodata (
         location_id SERIAL PRIMARY KEY,
 				locations VARCHAR,
-        user_id INT REFERENCES users(user_id) NOT NULL
+        user_id INT REFERENCES users(user_id)
 			);`);
 
-      return Promise.all([geodataTablePromise, geodataTablePromise]);
+      return Promise.all([usersTablePromise, geodataTablePromise]);
     })
     .then(() => {
       const insertGeoDataQueryStr = format(
         "INSERT INTO geodata (locations) VALUES %L;",
-        geodata.map(({ locations }) => [locations])
+        geoData.map(({ locations }) => [locations])
       );
       const geoPromise = db.query(insertGeoDataQueryStr);
 
       const insertUsersQueryStr = format(
-        "INSERT INTO users (user_id, password, username, avatar_url) VALUES %L;",
+        "INSERT INTO users (username, password, avatar_url) VALUES %L;",
         userData.map(({ username, password, avatar_url }) => [
           username,
           password,
