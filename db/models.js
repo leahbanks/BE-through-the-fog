@@ -1,19 +1,19 @@
-const db = require("./connections")
+const db = require("./connection")
 const users = require("./data/testData/users")
 const { string } = require("pg-format")
 
-fetchUsers = () => {
-    let sqlString = `SELECT * FROM users`
+const fetchUsers = () => {
+    let sqlString = `SELECT * FROM users;`
     return db.query(sqlString)
     .then(({rows}) => rows)
 }
 
 
-fetchUsername = (query) => {
+const fetchUsername = (query) => {
     const values = [query]
     if (typeof values[0] !== 'string') {return Promise.reject({status: 400, msg: 'Bad Request'})}
     const sqlString = `SELECT * from users
-    WHERE users.username = $1`
+    WHERE users.username = $1;`
 
     return db.query(sqlString, values)
     .then(({ rows }) => {
@@ -24,3 +24,5 @@ fetchUsername = (query) => {
         }
     })
 }
+
+module.exports = {fetchUsername, fetchUsers};
