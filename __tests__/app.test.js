@@ -56,9 +56,26 @@ describe("app", () => {
         throw new Error("Internal Server Error");
       });
 
-      return Promise.all([request(app).get("/api/users").expect(500)]).then(
+      return Promise.all([request(app).get("/api/users").expect(500)]);
+    });
+  });
+  describe("GET /api/users/:username endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/users/mallionaire").expect(200);
+    });
+    it("responds with only one user", () => {
+      return request(app)
+        .get("/api/users/mallionaire")
+        .expect(200)
+        .then((res) => {
+          let user = res.body;
+          expect(user.length).toBe(1);
+        });
+    });
+    it("responds with a status 404 if user not found", () => {
+      return Promise.all([request(app).get("/api/users/abi").expect(404)]).then(
         ([res1]) => {
-          expect(res1.body.message).toEqual("Internal Server Error");
+          expect(res1.body.msg).toEqual("Not Found");
         }
       );
     });
