@@ -98,4 +98,58 @@ describe("app", () => {
       );
     });
   });
+  describe("POST /api/users endpoint", () => {
+    const testUser = {
+      username: "testcoolname",
+      password: "veryinsecurepassword",
+      avatar_url: "https://www.coolpictures.com/reallycoolimage.jpeg",
+    };
+    it("responds with a status 201 if successful", () => {
+      return request(app).post("/api/users").send(testUser).expect(201);
+    });
+    it("responds with the posted user", () => {
+      return request(app)
+        .post("api/users")
+        .send(testUser)
+        .expect(201)
+        .then((res) => {
+          const user = res.body;
+          expect(user).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                user_id: expect.any(Number),
+                username: expect.any(String),
+                password: expect.any(String),
+                avatar_url: expect.any(String),
+              }),
+            ])
+          );
+        });
+    });
+    it("actually adds the user to the database", () => {
+      return request(app)
+        .post("api/users")
+        .send(testUser)
+        .expect(201)
+        .then(() => {
+          return request(app)
+            .get("/api/user/testcoolname")
+            .expect(200)
+            .then((res) => {
+              const user = res.body;
+              expect(user).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    user_id: 5,
+                    username: "testcoolname",
+                    password: "veryinsecurepassword",
+                    avatar_url:
+                      "https://www.coolpictures.com/reallycoolimage.jpeg",
+                  }),
+                ])
+              );
+            });
+        });
+    });
+  });
 });
