@@ -109,7 +109,7 @@ describe("app", () => {
     });
     it("responds with the posted user", () => {
       return request(app)
-        .post("api/users")
+        .post("/api/users")
         .send(testUser)
         .expect(201)
         .then((res) => {
@@ -128,12 +128,12 @@ describe("app", () => {
     });
     it("actually adds the user to the database", () => {
       return request(app)
-        .post("api/users")
+        .post("/api/users")
         .send(testUser)
         .expect(201)
-        .then(() => {
+        .then((res) => {
           return request(app)
-            .get("/api/user/testcoolname")
+            .get("/api/users/testcoolname")
             .expect(200)
             .then((res) => {
               const user = res.body;
