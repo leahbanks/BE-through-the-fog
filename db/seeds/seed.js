@@ -21,6 +21,7 @@ const seed = ({ geoData, userData }) => {
 			CREATE TABLE geodata (
         location_id SERIAL PRIMARY KEY,
 				locations VARCHAR,
+        img_url VARCHAR,
         user_id INT REFERENCES users(user_id)
 			);`);
 
@@ -42,7 +43,7 @@ const seed = ({ geoData, userData }) => {
         ])
       );
       const usersPromise = db.query(insertUsersQueryStr);
-
+      console.log("done");
       return Promise.all([geoPromise, usersPromise]);
     });
 };
