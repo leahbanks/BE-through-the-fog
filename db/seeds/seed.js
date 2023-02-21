@@ -18,9 +18,9 @@ const seed = ({ geodata, userData }) => {
 			);`);
       const geodataTablePromise = db.query(`
 			CREATE TABLE geodata (
-        location_id SERIAL PRIMARY KEY
-				locations VARCHAR(MAX), 
-        user_id INT REFERENCES users(user_id) NOT NULL,
+        location_id SERIAL PRIMARY KEY,
+				locations VARCHAR,
+        user_id INT REFERENCES users(user_id) NOT NULL
 			);`);
 
       return Promise.all([geodataTablePromise, geodataTablePromise]);
@@ -34,7 +34,11 @@ const seed = ({ geodata, userData }) => {
 
       const insertUsersQueryStr = format(
         "INSERT INTO users (user_id, password, username, avatar_url) VALUES %L;",
-        userData.map(({ username, password, avatar_url }) => [username, password, avatar_url])
+        userData.map(({ username, password, avatar_url }) => [
+          username,
+          password,
+          avatar_url,
+        ])
       );
       const usersPromise = db.query(insertUsersQueryStr);
 
