@@ -72,6 +72,24 @@ describe("app", () => {
           expect(user.length).toBe(1);
         });
     });
+    it("responds with a user object with the correct properties", () => {
+      return request(app)
+        .get("/api/users/mallionaire")
+        .expect(200)
+        .then((res) => {
+          let user = res.body;
+          expect(user).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                user_id: expect.any(Number),
+                username: expect.any(String),
+                password: expect.any(String),
+                avatar_url: expect.any(String),
+              }),
+            ])
+          );
+        });
+    });
     it("responds with a status 404 if user not found", () => {
       return Promise.all([request(app).get("/api/users/abi").expect(404)]).then(
         ([res1]) => {
