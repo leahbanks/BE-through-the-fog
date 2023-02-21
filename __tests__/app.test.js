@@ -23,7 +23,7 @@ describe("app", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
-          let users = res.body.users;
+          let users = res.body;
           expect(users).toBeInstanceOf(Array);
         });
     });
@@ -31,7 +31,7 @@ describe("app", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
-          let users = res.body.users;
+          let users = res.body;
           expect(users.length).toBe(4);
         });
     });
@@ -39,7 +39,7 @@ describe("app", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
-          let users = res.body.users;
+          let users = res.body;
           expect(users).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
