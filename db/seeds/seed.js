@@ -29,8 +29,12 @@ const seed = ({ geoData, userData }) => {
     })
     .then(() => {
       const insertGeoDataQueryStr = format(
-        "INSERT INTO geodata (locations) VALUES %L;",
-        geoData.map(({ locations }) => [locations])
+        "INSERT INTO geodata (locations, img_url, user_id) VALUES %L;",
+        geoData.map(({ locations, img_url, user_id }) => [
+          locations,
+          img_url,
+          user_id,
+        ])
       );
       const geoPromise = db.query(insertGeoDataQueryStr);
 
