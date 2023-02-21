@@ -2,7 +2,6 @@ const db = require("../connection");
 const format = require("pg-format");
 
 const seed = ({ geoData, userData }) => {
-  console.log(geoData);
   return db
     .query(`DROP TABLE IF EXISTS geodata;`)
     .then(() => {
@@ -15,17 +14,32 @@ const seed = ({ geoData, userData }) => {
 				password VARCHAR,
         username VARCHAR,
         avatar_url VARCHAR
-
 			);`);
+      return usersTablePromise;
+    })
+    .then(() => {
       const geodataTablePromise = db.query(`
-			CREATE TABLE geodata (
-        location_id SERIAL PRIMARY KEY,
-				locations VARCHAR,
-        img_url VARCHAR,
-        user_id INT REFERENCES users(user_id)
-			);`);
+        CREATE TABLE geodata (
+          location_id SERIAL PRIMARY KEY,
+          locations VARCHAR,
+          img_url VARCHAR,
+          user_id INT REFERENCES users(user_id)
+        );`);
 
-      return Promise.all([usersTablePromise, geodataTablePromise]);
+      return geodataTablePromise;
+    })
+
+    .then(() => {
+      const insertUsersQueryStr = format(
+        "INSERT INTO users (username, password, avatar_url) VALUES %L;",
+        userData.map(({ username, password, avatar_url }) => [
+          username,
+          password,
+          avatar_url,
+        ])
+      );
+      const usersPromise = db.query(insertUsersQueryStr);
+      return usersPromise;
     })
     .then(() => {
       const insertGeoDataQueryStr = format(
@@ -37,18 +51,7 @@ const seed = ({ geoData, userData }) => {
         ])
       );
       const geoPromise = db.query(insertGeoDataQueryStr);
-
-      const insertUsersQueryStr = format(
-        "INSERT INTO users (username, password, avatar_url) VALUES %L;",
-        userData.map(({ username, password, avatar_url }) => [
-          username,
-          password,
-          avatar_url,
-        ])
-      );
-      const usersPromise = db.query(insertUsersQueryStr);
-      console.log("done");
-      return Promise.all([geoPromise, usersPromise]);
+      return geoPromise;
     });
 };
 
