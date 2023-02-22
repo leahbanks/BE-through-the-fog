@@ -31,8 +31,8 @@ const createUser = (data) => {
   }
   let sqlString = `INSERT INTO users (username`;
 
-  if (data.password) {
-    (sqlString += `, password`), values.push(data.password);
+  if (data.display_name) {
+    (sqlString += `, display_name`), values.push(data.display_name);
   }
   if (data.avatar_url) {
     (sqlString += `, avatar_url`), values.push(data.avatar_url);
@@ -41,7 +41,7 @@ const createUser = (data) => {
   sqlString += `)
     VALUES ($1`;
 
-  if (data.password) {
+  if (data.display_name) {
     sqlString += `, $2`;
   }
   if (data.avatar_url) {

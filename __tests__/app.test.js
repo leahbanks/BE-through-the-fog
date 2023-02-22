@@ -44,7 +44,7 @@ describe("app", () => {
             expect.arrayContaining([
               expect.objectContaining({
                 username: expect.any(String),
-                password: expect.any(String),
+                display_name: expect.any(String),
                 avatar_url: expect.any(String),
               }),
             ])
@@ -83,7 +83,7 @@ describe("app", () => {
               expect.objectContaining({
                 user_id: expect.any(Number),
                 username: expect.any(String),
-                password: expect.any(String),
+                display_name: expect.any(String),
                 avatar_url: expect.any(String),
               }),
             ])
@@ -101,7 +101,7 @@ describe("app", () => {
   describe("POST /api/users endpoint", () => {
     const testUser = {
       username: "testcoolname",
-      password: "veryinsecurepassword",
+      display_name: "veryinsecurepassword",
       avatar_url: "https://www.coolpictures.com/reallycoolimage.jpeg",
     };
     it("responds with a status 201 if successful", () => {
@@ -119,7 +119,7 @@ describe("app", () => {
               expect.objectContaining({
                 user_id: expect.any(Number),
                 username: expect.any(String),
-                password: expect.any(String),
+                display_name: expect.any(String),
                 avatar_url: expect.any(String),
               }),
             ])
@@ -142,7 +142,7 @@ describe("app", () => {
                   expect.objectContaining({
                     user_id: 5,
                     username: "testcoolname",
-                    password: "veryinsecurepassword",
+                    display_name: "veryinsecurepassword",
                     avatar_url:
                       "https://www.coolpictures.com/reallycoolimage.jpeg",
                   }),
