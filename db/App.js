@@ -9,7 +9,7 @@ const {
   getUsers,
   getUsername,
   sendUser,
-  getGeoData,
+  getUserGeoData,
   getAllGeoData,
 } = require("./controllers");
 
@@ -19,7 +19,7 @@ app.get("/api/users/:username", getUsername);
 
 app.post("/api/users", sendUser);
 
-app.get("/api/geodata/:user_id", getGeoData);
+app.get("/api/users/:user_id/geodata", getUserGeoData);
 
 app.get("/api/geodata", getAllGeoData);
 

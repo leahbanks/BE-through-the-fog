@@ -1,6 +1,10 @@
-
-const {fetchUsers, fetchUsername, createUser, fetchGeoData, fetchAllGeoData} = require('./models')
-
+const {
+  fetchUsers,
+  fetchUsername,
+  createUser,
+  fetchGeoDataByUser,
+  fetchAllGeoData,
+} = require("./models");
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -18,31 +22,33 @@ const getUsername = (req, res, next) => {
 };
 
 const sendUser = (req, res, next) => {
-
-    const data = req.body
-    createUser(data)
-
+  const data = req.body;
+  createUser(data)
     .then((users) => {
       res.status(201).send(users);
     })
     .catch((err) => next(err));
 };
 
-const getGeoData = (req, res, next) => {
-    const user = req.params.user_id
-    fetchGeoData(user)
+const getUserGeoData = (req, res, next) => {
+  const user = req.params.user_id;
+  fetchGeoDataByUser(user)
     .then((data) => {
-      res.status(200).send(data)
+      res.status(200).send(data);
     })
-    .catch((err) => next(err))
-}
+    .catch((err) => next(err));
+};
 
 const getAllGeoData = (req, res, next) => {
-  fetchAllGeoData()
-  .then((data) => {
-    res.status(200).send(data)
-  })
-}
+  fetchAllGeoData().then((data) => {
+    res.status(200).send(data);
+  });
+};
 
-
-module.exports = { getUsers, getUsername, sendUser, getGeoData, getAllGeoData };
+module.exports = {
+  getUsers,
+  getUsername,
+  sendUser,
+  getUserGeoData,
+  getAllGeoData,
+};

@@ -54,7 +54,7 @@ const createUser = (data) => {
   return db.query(sqlString, values).then(({ rows }) => rows);
 };
 
-const fetchGeoData = (user) => {
+const fetchGeoDataByUser = (user) => {
   const values = [user];
 
   const checkUserSql = `SELECT * FROM users
@@ -73,9 +73,14 @@ const fetchGeoData = (user) => {
 };
 
 const fetchAllGeoData = () => {
-    let sqlString = `SELECT geodata.location_id, geodata.user_id FROM geodata;`;
+  let sqlString = `SELECT geodata.geodata_id, geodata.user_id FROM geodata;`;
   return db.query(sqlString).then(({ rows }) => rows);
 };
 
-
-module.exports = { fetchUsername, fetchUsers, createUser, fetchGeoData, fetchAllGeoData };
+module.exports = {
+  fetchUsername,
+  fetchUsers,
+  createUser,
+  fetchGeoDataByUser,
+  fetchAllGeoData,
+};
