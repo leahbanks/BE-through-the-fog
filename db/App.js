@@ -6,11 +6,15 @@ app.use(cors());
 app.use(express.json())
 
 
-const { getUsers, getUsername } = require ('./controllers')
+const { getUsers, getUsername, sendUser, getGeoData } = require ('./controllers')
 
 app.get('/api/users', getUsers)
 
 app.get('/api/users/:username', getUsername)
+
+app.post('api/users', sendUser)
+
+app.get('api/geodata/:user_id', getGeoData)
 
 
 

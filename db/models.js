@@ -48,4 +48,25 @@ const createUser = (data) => {
     .then(({rows}) => rows)
 }
 
-module.exports = {fetchUsername, fetchUsers, createUser};
+
+const fetchGeoData = (user) => {
+    const values = [user]
+
+    const checkUserSql = `SELECT * FROM users
+    WHERE users.user_id = $1;`
+
+    const sqlString = `SELECT * FROM geodata
+    WHERE geodata.user_id = $1;`
+
+    return db.query(checkUserSql, values).then((result) => {
+        if (result.rowCount === 0) {return Promise.reject({status: 404, msg: "User not found"})}
+        else {
+    
+
+    return db.query(sqlString, values)
+        .then(({ rows }) => rows)}} 
+)
+}
+
+
+module.exports = {fetchUsername, fetchUsers, createUser, fetchGeoData};
