@@ -4,6 +4,7 @@ const {
   createUser,
   fetchGeoDataByUser,
   fetchAllGeoData,
+  fetchGeoDataById,
 } = require("./models");
 
 const getUsers = (req, res, next) => {
@@ -40,9 +41,20 @@ const getUserGeoData = (req, res, next) => {
 };
 
 const getAllGeoData = (req, res, next) => {
-  fetchAllGeoData().then((data) => {
-    res.status(200).send(data);
-  });
+  fetchAllGeoData()
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => next(err));
+};
+
+const getGeoDataById = (req, res, next) => {
+  const id = req.params.geodata_id;
+  fetchGeoDataById(id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => next(err));
 };
 
 module.exports = {
@@ -51,4 +63,5 @@ module.exports = {
   sendUser,
   getUserGeoData,
   getAllGeoData,
+  getGeoDataById,
 };

@@ -254,13 +254,13 @@ describe("app", () => {
       return Promise.all([request(app).get("/api/geodata").expect(500)]);
     });
   });
-  describe("GET /api/geodata/:drop_id endpoint", () => {
+  describe("GET /api/geodata/:geodata_id endpoint", () => {
     it("responds with a status 200 if successful", () => {
-      return request(app).get("/api/geodata/drop/1").expect(200);
+      return request(app).get("/api/geodata/1").expect(200);
     });
     it("responds with only one piece of geodata", () => {
       return request(app)
-        .get("/api/geodata/drop/1")
+        .get("/api/geodata/1")
         .expect(200)
         .then((res) => {
           let geodata = res.body;
@@ -269,14 +269,14 @@ describe("app", () => {
     });
     it("responds with a geodata object with the correct properties", () => {
       return request(app)
-        .get("/api/geodata/drop/1")
+        .get("/api/geodata/1")
         .expect(200)
         .then((res) => {
           let geodata = res.body;
           expect(geodata).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                location_id: expect.any(Number),
+                geodata_id: expect.any(Number),
                 location: expect.arrayContaining([
                   expect.any(Number),
                   expect.any(Number),
@@ -291,9 +291,9 @@ describe("app", () => {
     });
     it("responds with a status 404 if drop not found", () => {
       return Promise.all([
-        request(app).get("/api/geodata/drop/99999").expect(404),
+        request(app).get("/api/geodata/99999").expect(404),
       ]).then(([res1]) => {
-        expect(res1.body.msg).toEqual("Not Found");
+        expect(res1.body.msg).toEqual("Geodata not found with matching ID");
       });
     });
   });

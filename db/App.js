@@ -11,6 +11,7 @@ const {
   sendUser,
   getUserGeoData,
   getAllGeoData,
+  getGeoDataById,
 } = require("./controllers");
 
 app.get("/api/users", getUsers);
@@ -22,6 +23,8 @@ app.post("/api/users", sendUser);
 app.get("/api/users/:user_id/geodata", getUserGeoData);
 
 app.get("/api/geodata", getAllGeoData);
+
+app.get("/api/geodata/:geodata_id", getGeoDataById);
 
 //error handling
 

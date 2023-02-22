@@ -77,10 +77,29 @@ const fetchAllGeoData = () => {
   return db.query(sqlString).then(({ rows }) => rows);
 };
 
+const fetchGeoDataById = (id) => {
+  const values = [id];
+
+  const sqlString = `SELECT * from geodata
+WHERE geodata.geodata_id = $1;`;
+
+  return db.query(sqlString, values).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: "Geodata not found with matching ID",
+      });
+    } else {
+      return rows;
+    }
+  });
+};
+
 module.exports = {
   fetchUsername,
   fetchUsers,
   createUser,
   fetchGeoDataByUser,
   fetchAllGeoData,
+  fetchGeoDataById,
 };
