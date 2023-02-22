@@ -73,7 +73,7 @@ const fetchGeoData = (user) => {
 };
 
 const fetchAllGeoData = () => {
-    let sqlString = `SELECT * FROM geodata;`;
+    let sqlString = `SELECT geodata.location_id, geodata.user_id FROM geodata;`;
   return db.query(sqlString).then(({ rows }) => rows);
 };
 
