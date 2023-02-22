@@ -180,6 +180,7 @@ describe("app", () => {
           expect(geodata).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
+                location_id: expect.any(Number),
                 locations: expect.arrayContaining([
                   expect.arrayContaining([
                     expect.any(Number),
