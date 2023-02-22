@@ -187,7 +187,6 @@ describe("app", () => {
         .get("/api/geodata/1")
         .then((res) => {
           let geodata = res.body;
-          console.log(geodata[0]);
           expect(geodata[0]).toEqual(
             expect.objectContaining({
               location_id: expect.any(Number),
