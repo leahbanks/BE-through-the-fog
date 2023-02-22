@@ -209,6 +209,54 @@ describe("app", () => {
       return Promise.all([request(app).get("/api/geodata/1").expect(500)]);
     });
   });
+  describe("GET /api/geodata endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/geodata").expect(200);
+    });
+    it("responds with an array of geodata objects associated with specific user", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toBeInstanceOf(Array);
+        });
+    });
+    it("responds with an array of geodata objects associated with specified user, with the correct length", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(4);
+        });
+    });
+    it("responds with an array of geodata objects with expected properties and values", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: expect.any(Number),
+                location: expect.arrayContaining([
+                  expect.any(Number),
+                  expect.any(Number),
+                ]),
+                img_url: expect.any(String),
+                user_id: expect.any(Number),
+              }),
+            ])
+          );
+        });
+    });
+    it("responds with a status 500 when an issue occurs", () => {
+      jest.spyOn(db, "query").mockImplementation(() => {
+        throw new Error("Internal Server Error");
+      });
+
+      return Promise.all([request(app).get("/api/geodata").expect(500)]);
+    });
+  });
   describe("GET /api/geodata/drop/:drop_id endpoint", () => {
     it("responds with a status 200 if successful", () => {
       return request(app).get("/api/geodata/drop/1").expect(200);
