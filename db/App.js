@@ -7,9 +7,18 @@ app.use(express.json());
 
 const { getUsers, getUsername, sendUser } = require("./controllers");
 
-app.get("/api/users", getUsers);
 
-app.get("/api/users/:username", getUsername);
+const { getUsers, getUsername, sendUser, getGeoData } = require ('./controllers')
+
+app.get('/api/users', getUsers)
+
+app.get('/api/users/:username', getUsername)
+
+app.post('api/users', sendUser)
+
+app.get('api/geodata/:user_id', getGeoData)
+
+
 
 app.post("/api/users", sendUser);
 
