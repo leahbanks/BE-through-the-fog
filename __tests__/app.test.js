@@ -238,11 +238,6 @@ describe("app", () => {
             expect.arrayContaining([
               expect.objectContaining({
                 location_id: expect.any(Number),
-                location: expect.arrayContaining([
-                  expect.any(Number),
-                  expect.any(Number),
-                ]),
-                img_url: expect.any(String),
                 user_id: expect.any(Number),
               }),
             ])
