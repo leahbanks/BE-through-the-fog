@@ -152,45 +152,53 @@ describe("app", () => {
         });
     });
   });
-  describe("GET /api/geodata endpoint", () => {
+  describe("GET /api/geodata/:user_id endpoint", () => {
     it("responds with a status 200 if successful", () => {
-      return request(app).get("/api/geodata").expect(200);
+      return request(app).get("/api/geodata/1").expect(200);
     });
-    it("responds with an array of geodata objects", () => {
+    it("responds with an array of geodata objects associated with specific user", () => {
       return request(app)
-        .get("/api/geodata")
+        .get("/api/geodata/1")
         .then((res) => {
           let geodata = res.body;
           expect(geodata).toBeInstanceOf(Array);
         });
     });
-    it("responds with an array of geodata objects with the correct length", () => {
+    it("responds with an array of geodata objects associated with specified user, with the correct length", () => {
       return request(app)
-        .get("/api/geodata")
+        .get("/api/geodata/1")
         .then((res) => {
           let geodata = res.body;
-          expect(geodata.length).toBe(4);
+          expect(geodata.length).toBe(2);
+          return request(app).get("/api/geodata/2");
+        })
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(1);
+          return request(app).get("/api/geodata/3");
+        })
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(0);
         });
     });
     it("responds with an array of geodata objects with expected properties and values", () => {
       return request(app)
-        .get("/api/geodata")
+        .get("/api/geodata/1")
         .then((res) => {
           let geodata = res.body;
-          expect(geodata).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                location_id: expect.any(Number),
-                locations: expect.arrayContaining([
-                  expect.arrayContaining([
-                    expect.any(Number),
-                    expect.any(Number),
-                  ]),
-                ]),
-                img_url: expect.any(String),
-                user_id: expect.any(Number),
-              }),
-            ])
+          console.log(geodata[0]);
+          expect(geodata[0]).toEqual(
+            expect.objectContaining({
+              location_id: expect.any(Number),
+              location: expect.arrayContaining([
+                expect.any(Number),
+                expect.any(Number),
+              ]),
+              img_url: expect.any(String),
+              comment: expect.any(String),
+              user_id: expect.any(Number),
+            })
           );
         });
     });
@@ -199,7 +207,7 @@ describe("app", () => {
         throw new Error("Internal Server Error");
       });
 
-      return Promise.all([request(app).get("/api/geodata").expect(500)]);
+      return Promise.all([request(app).get("/api/geodata/1").expect(500)]);
     });
   });
 });
