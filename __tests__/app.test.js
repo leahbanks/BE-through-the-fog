@@ -209,4 +209,95 @@ describe("app", () => {
       return Promise.all([request(app).get("/api/geodata/1").expect(500)]);
     });
   });
+  describe("GET /api/geodata endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/geodata").expect(200);
+    });
+    it("responds with an array of geodata objects associated with specific user", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toBeInstanceOf(Array);
+        });
+    });
+    it("responds with an array of geodata objects associated with specified user, with the correct length", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(4);
+        });
+    });
+    it("responds with an array of geodata objects with expected properties and values", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: expect.any(Number),
+                location: expect.arrayContaining([
+                  expect.any(Number),
+                  expect.any(Number),
+                ]),
+                img_url: expect.any(String),
+                user_id: expect.any(Number),
+              }),
+            ])
+          );
+        });
+    });
+    it("responds with a status 500 when an issue occurs", () => {
+      jest.spyOn(db, "query").mockImplementation(() => {
+        throw new Error("Internal Server Error");
+      });
+
+      return Promise.all([request(app).get("/api/geodata").expect(500)]);
+    });
+  });
+  describe("GET /api/geodata/drop/:drop_id endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/geodata/drop/1").expect(200);
+    });
+    it("responds with only one piece of geodata", () => {
+      return request(app)
+        .get("/api/geodata/drop/1")
+        .expect(200)
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(1);
+        });
+    });
+    it("responds with a geodata object with the correct properties", () => {
+      return request(app)
+        .get("/api/geodata/drop/1")
+        .expect(200)
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: expect.any(Number),
+                location: expect.arrayContaining([
+                  expect.any(Number),
+                  expect.any(Number),
+                ]),
+                img_url: expect.any(String),
+                comment: expect.any(String),
+                user_id: expect.any(Number),
+              }),
+            ])
+          );
+        });
+    });
+    it("responds with a status 404 if drop not found", () => {
+      return Promise.all([
+        request(app).get("/api/geodata/drop/99999").expect(404),
+      ]).then(([res1]) => {
+        expect(res1.body.msg).toEqual("Not Found");
+      });
+    });
+  });
 });
