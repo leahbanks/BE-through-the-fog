@@ -21,8 +21,7 @@ app.post("/api/users", sendUser);
 
 app.get("/api/geodata/:user_id", getGeoData);
 
-app.get("/api/geodata", getAllGeodata)
-
+app.get("/api/geodata", getAllGeoData);
 
 //error handling
 
