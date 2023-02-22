@@ -215,15 +215,16 @@ describe("app", () => {
     it("responds with a status 200 if successful", () => {
       return request(app).get("/api/geodata").expect(200);
     });
-    it("responds with an array of geodata objects associated with specific user", () => {
+    it("responds with an array of geodata objects", () => {
       return request(app)
         .get("/api/geodata")
         .then((res) => {
           let geodata = res.body;
+          console.log(geodata);
           expect(geodata).toBeInstanceOf(Array);
         });
     });
-    it("responds with an array of geodata objects associated with specified user, with the correct length", () => {
+    it("responds with an array of geodata objects with the correct length", () => {
       return request(app)
         .get("/api/geodata")
         .then((res) => {
