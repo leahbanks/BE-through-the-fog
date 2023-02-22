@@ -72,4 +72,10 @@ const fetchGeoData = (user) => {
   });
 };
 
-module.exports = { fetchUsername, fetchUsers, createUser, fetchGeoData };
+const fetchAllGeoData = () => {
+    let sqlString = `SELECT geodata.location_id, geodata.user_id FROM geodata;`;
+  return db.query(sqlString).then(({ rows }) => rows);
+};
+
+
+module.exports = { fetchUsername, fetchUsers, createUser, fetchGeoData, fetchAllGeoData };

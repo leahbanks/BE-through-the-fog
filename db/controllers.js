@@ -1,5 +1,5 @@
 
-const {fetchUsers, fetchUsername, createUser, fetchGeoData} = require('./models')
+const {fetchUsers, fetchUsername, createUser, fetchGeoData, fetchAllGeoData} = require('./models')
 
 
 const getUsers = (req, res, next) => {
@@ -37,7 +37,12 @@ const getGeoData = (req, res, next) => {
     .catch((err) => next(err))
 }
 
+const getAllGeoData = (req, res, next) => {
+  fetchAllGeoData()
+  .then((data) => {
+    res.status(200).send(data)
+  })
+}
 
 
-
-module.exports = { getUsers, getUsername, sendUser, getGeoData };
+module.exports = { getUsers, getUsername, sendUser, getGeoData, getAllGeoData };
