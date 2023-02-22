@@ -10,6 +10,7 @@ const {
   getUsername,
   sendUser,
   getGeoData,
+  getAllGeoData,
 } = require("./controllers");
 
 app.get("/api/users", getUsers);
@@ -19,6 +20,9 @@ app.get("/api/users/:username", getUsername);
 app.post("/api/users", sendUser);
 
 app.get("/api/geodata/:user_id", getGeoData);
+
+app.get("/api/geodata", getAllGeodata)
+
 
 //error handling
 
