@@ -1,4 +1,6 @@
+
 const {fetchUsers, fetchUsername, createUser, fetchGeoData} = require('./models')
+
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -16,13 +18,15 @@ const getUsername = (req, res, next) => {
 };
 
 const sendUser = (req, res, next) => {
+
     const data = req.body
     createUser(data)
+
     .then((users) => {
-        res.status(201).send(users)
+      res.status(201).send(users);
     })
-    .catch((err) => next(err))
-}
+    .catch((err) => next(err));
+};
 
 const getGeoData = (req, res, next) => {
     const user = req.params.user_id

@@ -109,7 +109,7 @@ describe("app", () => {
     });
     it("responds with the posted user", () => {
       return request(app)
-        .post("api/users")
+        .post("/api/users")
         .send(testUser)
         .expect(201)
         .then((res) => {
@@ -128,12 +128,12 @@ describe("app", () => {
     });
     it("actually adds the user to the database", () => {
       return request(app)
-        .post("api/users")
+        .post("/api/users")
         .send(testUser)
         .expect(201)
-        .then(() => {
+        .then((res) => {
           return request(app)
-            .get("/api/user/testcoolname")
+            .get("/api/users/testcoolname")
             .expect(200)
             .then((res) => {
               const user = res.body;
@@ -150,6 +150,56 @@ describe("app", () => {
               );
             });
         });
+    });
+  });
+  describe("GET /api/geodata endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/geodata").expect(200);
+    });
+    it("responds with an array of geodata objects", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toBeInstanceOf(Array);
+        });
+    });
+    it("responds with an array of geodata objects with the correct length", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata.length).toBe(4);
+        });
+    });
+    it("responds with an array of geodata objects with expected properties and values", () => {
+      return request(app)
+        .get("/api/geodata")
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: expect.any(Number),
+                locations: expect.arrayContaining([
+                  expect.arrayContaining([
+                    expect.any(Number),
+                    expect.any(Number),
+                  ]),
+                ]),
+                img_url: expect.any(String),
+                user_id: expect.any(Number),
+              }),
+            ])
+          );
+        });
+    });
+    it("responds with a status 500 when an issue occurs", () => {
+      jest.spyOn(db, "query").mockImplementation(() => {
+        throw new Error("Internal Server Error");
+      });
+
+      return Promise.all([request(app).get("/api/geodata").expect(500)]);
     });
   });
 });
