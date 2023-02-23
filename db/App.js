@@ -38,7 +38,6 @@ app.delete("/api/geodata/single/:geodata_id", removeOnePin);
 //error handling
 
 app.use((err, req, res, next) => {
-  console.log(err);
   res.status(err.status).send({ msg: err.msg });
 });
 
