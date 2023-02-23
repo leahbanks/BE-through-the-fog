@@ -31,13 +31,14 @@ app.get("/api/geodata/:geodata_id", getGeoDataById);
 
 app.post("/api/geodata", postGeoDrop);
 
-app.delete("/api/geodata/:user_id", removeAllPins);
+app.delete("/api/users/:user_id/geodata", removeAllPins);
 
-app.delete("/api/geodata/single/:geodata_id", removeOnePin);
+app.delete("/api/geodata/:geodata_id", removeOnePin);
 
 //error handling
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status).send({ msg: err.msg });
 });
 
