@@ -24,7 +24,7 @@ const fetchUsername = (query) => {
   });
 };
 
-const fetchUserID = () => {
+const fetchUserID = (query) => {
   const values = [query];
   if (typeof values[0] !== "number") {
     return Promise.reject({ status: 400, msg: "Bad Request" });
@@ -139,7 +139,9 @@ const deleteAllPins = (query) => {
   let sqlString = `DELETE FROM geodata
   WHERE geodata.user_id = $1;`;
 
-  return db.query(sqlString, values).then(({ rows }) => rows);
+  return fetchUserID(check).then(() => {
+    return db.query(sqlString, values).then(({ rows }) => rows);
+  });
 };
 
 const deleteOnePin = (query) => {

@@ -22,7 +22,7 @@ app.get("/api/users", getUsers);
 
 app.get("/api/users/:username", getUsername);
 
-app.get("/api/users/id/:user_id", getUserbyID)
+app.get("/api/users/id/:user_id", getUserbyID);
 
 app.post("/api/users", sendUser);
 

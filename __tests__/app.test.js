@@ -388,6 +388,9 @@ describe("app", () => {
             });
         });
     });
+    it("responds with an error code of 404 and appropriate error message if no user is found with provided user_id", () => {
+      return request(app).delete("/api/users/99/geodata").expect(404);
+    });
     it("responds with an error code of 400 and appropriate error message if the id passed in is invalid", () => {
       return Promise.all([
         request(app).delete("/api/users/example/geodata").expect(400),
