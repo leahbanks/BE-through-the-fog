@@ -298,4 +298,66 @@ describe("app", () => {
       });
     });
   });
+  describe("POST /api/geodata endpoint", () => {
+    const testGeodata = {
+      location: [-75.1001345742366, 123.34633830198504],
+      user_id: 1,
+      comment: "Loving the weather",
+      img_url: "https://i.imgur.com/KT5sbOH.jpeg",
+    };
+    it("responds with a status 201 if successful", () => {
+      return request(app).post("/api/geodata").send(testGeodata).expect(201);
+    });
+    it("responds with the posted user", () => {
+      return request(app)
+        .post("/api/geodata")
+        .send(testGeodata)
+        .expect(201)
+        .then((res) => {
+          let geodata = res.body;
+          expect(geodata).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                geodata_id: expect.any(Number),
+                location: expect.arrayContaining([
+                  expect.any(Number),
+                  expect.any(Number),
+                ]),
+                img_url: expect.any(String),
+                comment: expect.any(String),
+                user_id: expect.any(Number),
+              }),
+            ])
+          );
+        });
+    });
+    it("actually adds the user to the database", () => {
+      return request(app)
+        .post("/api/geodata")
+        .send(testGeodata)
+        .expect(201)
+        .then((res) => {
+          return request(app)
+            .get("/api/geodata/5")
+            .expect(200)
+            .then((res) => {
+              let geodata = res.body;
+              expect(geodata).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    geodata_id: expect.any(Number),
+                    location: expect.arrayContaining([
+                      expect.any(Number),
+                      expect.any(Number),
+                    ]),
+                    img_url: expect.any(String),
+                    comment: expect.any(String),
+                    user_id: expect.any(Number),
+                  }),
+                ])
+              );
+            });
+        });
+    });
+  });
 });

@@ -96,18 +96,20 @@ WHERE geodata.geodata_id = $1;`;
 };
 
 const sendGeoDrop = (location, url, comment, user) => {
-  const values = [location, url, comment, user]
+  const values = [location, url, comment, user];
 
   const sqlString = `INSERT INTO geodata (location, img_url, comment, user_id)
   VALUES
   ($1, $2, $3, $4)
-  RETURNING *;`
+  RETURNING *;`;
 
-  return db.query(sqlString, values).then(({rows}) => 
-    rows
-  )
-
-}
+  return db
+    .query(sqlString, values)
+    .then(({ rows }) => rows)
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const deleteAllPins = (query) => {
   const check = parseInt(query.user_id)
