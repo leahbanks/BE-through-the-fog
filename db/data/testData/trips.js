@@ -99,6 +99,6 @@ module.exports = [
           location: `{-0.15314146762585779, 51.534935924609954}`,
           trip_id: 1,
           user_id: 2,
-          circle_size: 0.5,
+          circle_size: 1.0,
         },
   ];
