@@ -27,6 +27,15 @@ const getUsername = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const getUserbyID = (req, res, next) => {
+  const query = req.params.user_id;
+  fetchUserID(query)
+  .then((id) => {
+    res.status(200).send(id)
+  })
+  .catch((err) => err)
+};
+
 const sendUser = (req, res, next) => {
   const data = req.body;
   createUser(data)
@@ -102,4 +111,5 @@ module.exports = {
   postGeoDrop,
   removeAllPins,
   removeOnePin,
+  getUserbyID,
 };
