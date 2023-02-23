@@ -6,6 +6,8 @@ const {
   fetchAllGeoData,
   fetchGeoDataById,
   sendGeoDrop,
+  deleteAllPins,
+  deleteOnePin
 } = require("./models");
 
 const {Format_coords} = require("./utils")
@@ -73,6 +75,24 @@ const postGeoDrop = (req, res, next) => {
 
 };
 
+const removeAllPins = (req, res, next) => {
+  const query = req.params
+  deleteAllPins(query)
+  .then((response) => {
+    res.status(204).send(response)
+  })
+  .catch((err) => next(err))
+}
+
+const removeOnePin = (req, res, next) => {
+  const query = req.params
+  deleteOnePin(query)
+  .then((response) => {
+    res.status(204).send(response)
+  })
+  .catch((err) => next(err))
+}
+
 module.exports = {
   getUsers,
   getUsername,
@@ -80,5 +100,7 @@ module.exports = {
   getUserGeoData,
   getAllGeoData,
   getGeoDataById,
-  postGeoDrop
+  postGeoDrop,
+  removeAllPins,
+  removeOnePin, 
 };

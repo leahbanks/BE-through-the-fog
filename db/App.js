@@ -12,7 +12,9 @@ const {
   getUserGeoData,
   getAllGeoData,
   getGeoDataById,
-  postGeoDrop
+  postGeoDrop,
+  removeAllPins,
+  removeOnePin
 
 } = require("./controllers");
 
@@ -29,6 +31,10 @@ app.get("/api/geodata", getAllGeoData);
 app.get("/api/geodata/:geodata_id", getGeoDataById);
 
 app.post("/api/geodata/", postGeoDrop)
+
+app.delete("/api/geodata/:user_id", removeAllPins)
+
+app.delete("/api/geodata/single/:geodata_id", removeOnePin)
 
 //error handling
 

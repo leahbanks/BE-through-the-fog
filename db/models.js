@@ -109,6 +109,32 @@ const sendGeoDrop = (location, url, comment, user) => {
 
 }
 
+const deleteAllPins = (query) => {
+  const check = parseInt(query.user_id)
+  if (isNaN(check)) {return Promise.reject({status: 400, msg: "Bad Request"})}
+
+  
+  const values = [query.user_id]
+
+  let sqlString = `DELETE * FROM geodata
+  WHERE geodata.user_id = $1;`
+
+  return db.query(sqlString, values)
+  .then(({rows}) => rows)}
+
+  const deleteOnePin = (query) => {
+    const check = parseInt(query.geodata_id)
+    if (isNaN(check)) {return Promise.reject({status: 400, msg: "Bad Request"})}
+  
+    
+    const values = [query.geodata_id]
+  
+    let sqlString = `DELETE * FROM geodata
+    WHERE geodata.geodata_id = $1;`
+  
+    return db.query(sqlString, values)
+    .then(({rows}) => rows)}
+
 module.exports = {
   fetchUsername,
   fetchUsers,
@@ -117,4 +143,6 @@ module.exports = {
   fetchAllGeoData,
   fetchGeoDataById,
   sendGeoDrop,
+  deleteAllPins,
+  deleteOnePin
 };
