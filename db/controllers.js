@@ -8,7 +8,7 @@ const {
   sendGeoDrop,
 } = require("./models");
 
-const {Format_coords} = require("./utils")
+const { Format_coords } = require("./utils");
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -61,16 +61,15 @@ const getGeoDataById = (req, res, next) => {
 };
 
 const postGeoDrop = (req, res, next) => {
-  const comment = req.body
-  const url = req.img_url
-  const user = req.user_id
-  const location = Format_coords(req.location)
+  const comment = req.body.comment;
+  const url = req.body.img_url;
+  const user = req.body.user_id;
+  const location = Format_coords(req.body.location);
   sendGeoDrop(location, url, comment, user)
-  .then((drop) => {
-    res.status(201).send(drop)
-  })
-  .catch((err) => next(err));
-
+    .then((drop) => {
+      res.status(201).send(drop);
+    })
+    .catch((err) => next(err));
 };
 
 module.exports = {
@@ -80,5 +79,5 @@ module.exports = {
   getUserGeoData,
   getAllGeoData,
   getGeoDataById,
-  postGeoDrop
+  postGeoDrop,
 };

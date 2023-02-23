@@ -12,8 +12,7 @@ const {
   getUserGeoData,
   getAllGeoData,
   getGeoDataById,
-  postGeoDrop
-
+  postGeoDrop,
 } = require("./controllers");
 
 app.get("/api/users", getUsers);
@@ -28,11 +27,12 @@ app.get("/api/geodata", getAllGeoData);
 
 app.get("/api/geodata/:geodata_id", getGeoDataById);
 
-app.post("/api/geodata/", postGeoDrop)
+app.post("/api/geodata", postGeoDrop);
 
 //error handling
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status).send({ msg: err.msg });
 });
 
