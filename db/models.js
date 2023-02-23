@@ -95,6 +95,20 @@ WHERE geodata.geodata_id = $1;`;
   });
 };
 
+const sendGeoDrop = (location, url, comment, user) => {
+  const values = [location, url, comment, user]
+
+  const sqlString = `INSERT INTO geodata (location, img_url, comment, user_id)
+  VALUES
+  ($1, $2, $3, $4)
+  RETURNING *;`
+
+  return db.query(sqlString, values).then(({rows}) => 
+    rows
+  )
+
+}
+
 module.exports = {
   fetchUsername,
   fetchUsers,
@@ -102,4 +116,5 @@ module.exports = {
   fetchGeoDataByUser,
   fetchAllGeoData,
   fetchGeoDataById,
+  sendGeoDrop,
 };
