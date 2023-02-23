@@ -220,7 +220,6 @@ describe("app", () => {
         .get("/api/geodata")
         .then((res) => {
           let geodata = res.body;
-          console.log(geodata);
           expect(geodata).toBeInstanceOf(Array);
         });
     });
@@ -373,7 +372,6 @@ describe("app", () => {
             .get("/api/users/1/geodata")
             .expect(200)
             .then((res) => {
-              console.log(res.body);
               const geodata = res.body;
               expect(geodata.length).toBe(0);
             })
