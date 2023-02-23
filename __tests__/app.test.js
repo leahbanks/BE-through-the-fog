@@ -360,4 +360,48 @@ describe("app", () => {
         });
     });
   });
+  describe("DELETE /api/users/:user_id/geodata endpoint", () => {
+    it("responds with a status 204 no content on successful deletion", () => {
+      return request(app).delete("/api/users/1/geodata").expect(204);
+    });
+    it("actually deletes all user geodata", () => {
+      return request(app)
+        .delete("/api/users/1/geodata")
+        .expect(204)
+        .then(() => {
+          return request(app)
+            .get("/api/users/1/geodata")
+            .expect(200)
+            .then((res) => {
+              console.log(res.body);
+              const geodata = res.body;
+              expect(geodata.length).toBe(0);
+            })
+            .then(() => {
+              return request(app)
+                .get("/api/geodata")
+                .expect(200)
+                .then((res) => {
+                  const geodata = res.body;
+                  geodata.forEach((geodata) => {
+                    expect(geodata.user_id).not.toBe(1);
+                  });
+                });
+            });
+        });
+    });
+    it("responds with an error code of 400 and appropriate error message if the id passed in is invalid", () => {
+      return Promise.all([
+        request(app).delete("/api/users/example/geodata").expect(400),
+        request(app).delete("/api/users/example1/geodata").expect(400),
+        request(app).delete("/api/users/[]/geodata").expect(400),
+        request(app).delete("/api/users/{}/geodata").expect(400),
+      ]).then(([res1, res2, res3, res4]) => {
+        expect(res1.body.msg).toEqual("Bad Request");
+        expect(res2.body.msg).toEqual("Bad Request");
+        expect(res3.body.msg).toEqual("Bad Request");
+        expect(res4.body.msg).toEqual("Bad Request");
+      });
+    });
+  });
 });
