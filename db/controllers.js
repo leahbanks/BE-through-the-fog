@@ -30,11 +30,11 @@ const getUsername = (req, res, next) => {
 
 const getUserbyID = (req, res, next) => {
   const query = req.params.user_id;
-  fetchUserID(query)
-  .then((id) => {
-    res.status(200).send(id)
-  })
-  .catch((err) => err)
+  fetchUserID(parseInt(query))
+    .then((id) => {
+      res.status(200).send(id);
+    })
+    .catch((err) => err);
 };
 
 const sendUser = (req, res, next) => {
@@ -103,14 +103,14 @@ const removeOnePin = (req, res, next) => {
 };
 
 const getTrips = (req, res, next) => {
-  const user_id = req.params
-  const trip_id = req.body.trip_id
+  const user_id = req.params.user_id;
+  const trip_id = req.query.trip_id;
   fetchTrips(user_id, trip_id)
-  .then((trips) => {
-    res.status(200).send(trips)
-  })
-  .catch((err) => next(err))
-}
+    .then((trips) => {
+      res.status(200).send(trips);
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = {
   getUsers,
