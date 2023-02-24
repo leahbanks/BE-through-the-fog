@@ -36,4 +36,4 @@ const formatTrips = (payload) => {
 
 console.log(JSON.stringify(formatTrips(dummyData), null, 2));
 
-module.exports = { Format_coords };
+module.exports = { Format_coords, formatTrips };

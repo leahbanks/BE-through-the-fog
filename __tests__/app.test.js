@@ -469,6 +469,7 @@ describe("app", () => {
         .expect(200)
         .then((res) => {
           let trips = res.body;
+          console.log(trips);
           trips.forEach((trip) => {
             expect(trip.user_id).toBe(1),
               expect(typeof trip.entry_id).toBe("number"),
@@ -484,7 +485,18 @@ describe("app", () => {
         .expect(200)
         .then((res) => {
           let trip = res.body;
-          console.log(trip);
+          expect(trip).toEqual(
+            expect.objectContaining({
+              user_id: 1,
+              trip_id: 2,
+              points: expect.arrayContaining([
+                expect.objectContaining({
+                  coordinates: expect.any(Array),
+                  circleSize: expect.any(Number),
+                }),
+              ]),
+            })
+          );
         });
     });
     it("responds with a status 404 if user not found", () => {
