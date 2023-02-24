@@ -39,13 +39,13 @@ module.exports = [
   {
     location: `{-0.1429489005651874, 51.50080870807764}`,
     trip_id: 2,
-    user_id: 2,
+    user_id: 1,
     circle_size: 0.5,
   },
   {
     location: `{-0.15314146762585779, 51.534935924609954}`,
     trip_id: 2,
-    user_id: 2,
+    user_id: 1,
     circle_size: 0.5,
   },
 
