@@ -114,6 +114,7 @@ const getTrips = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+// Maybe dont need this?
 const postToTrips = (req, res, next) => {
   const user_id = req.params.user_id;
   const trip_id = req.body.trip_id;
@@ -130,7 +131,7 @@ const multiPostToTrips = (req, res, next) => {
   const formattedBody = formatPostTrips(req.body);
   multiAddToTrips(formattedBody)
     .then((response) => {
-      res.status(200).send(response);
+      res.status(201).send(response);
     })
     .catch((err) => next(err));
 };
