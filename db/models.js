@@ -186,6 +186,28 @@ const fetchTrips = (user_id, trip_id) => {
   });
 };
 
+const addToTrips = (location, user_id, trip_id, circle_size) => {
+
+  const values = [location, user_id, trip_id, circle_size]
+
+  for (let i = 0; i < values.length; i++) 
+    {if (values[i] === undefined || values[i] === null) 
+      {return Promise.reject({status: 400, msg: "Bad Request"})}} 
+
+  let sqlString = `INSERT INTO trips (location, trip_id, user_id, circle_size)
+   VALUES
+   ($1, $2, $3, $4)
+   returning *;`;
+
+   return db
+   .query(sqlString, values)
+   .then(({ rows }) => rows)
+   .catch((err) => {
+     console.log(err);
+   });
+};
+  
+
 module.exports = {
   fetchUsername,
   fetchUsers,
@@ -198,4 +220,5 @@ module.exports = {
   deleteOnePin,
   fetchUserID,
   fetchTrips,
+  addToTrips,
 };
