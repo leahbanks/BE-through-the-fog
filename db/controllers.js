@@ -108,9 +108,7 @@ const getTrips = (req, res, next) => {
   const trip_id = req.query.trip_id;
   fetchTrips(user_id, trip_id)
     .then((trips) => {
-      if (trip_id) {
-        res.status(200).send(formatTrips(trips));
-      } else res.status(200).send(trips);
+      res.status(200).send(formatTrips(trips));
     })
     .catch((err) => next(err));
 };

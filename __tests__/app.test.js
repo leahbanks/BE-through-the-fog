@@ -454,51 +454,54 @@ describe("app", () => {
     it("responds with a status 200 if successful", () => {
       return request(app).get("/api/trips/1").expect(200);
     });
-    it("responds with correct length of trips", () => {
+    it("responds with correct length of coordinates for trip", () => {
       return request(app)
         .get("/api/trips/1")
         .expect(200)
         .then((res) => {
-          let trips = res.body;
-          expect(trips.length).toBe(8);
+          let trips = res.body.trips[0].points;
+          expect(trips.length).toBe(6);
         });
     });
-    it("responds with an array of trip objects with the correct properties", () => {
+    it("responds with the expected trips for user 1", () => {
       return request(app)
         .get("/api/trips/1")
         .expect(200)
         .then((res) => {
-          let trips = res.body;
-          console.log(trips);
-          trips.forEach((trip) => {
-            expect(trip.user_id).toBe(1),
-              expect(typeof trip.entry_id).toBe("number"),
-              expect(typeof trip.trip_id).toBe("number"),
-              expect(trip.location).toBeInstanceOf(Array),
-              expect(typeof trip.circle_size).toBe("number");
-          });
+          const trips = res.body.trips;
+          expect(res.body.user_id).toBe(1);
+          expect(trips).toHaveLength(2);
+          const trip1 = trips.find((trip) => trip.trip_id === 1);
+          expect(trip1.points).toHaveLength(6);
+          expect(trip1.points[0].coordinates).toEqual([
+            0.13138741600173248, 51.56144203807303,
+          ]);
+          expect(trip1.points[0].circleSize).toBe(0.5);
+          const trip2 = trips.find((trip) => trip.trip_id === 2);
+          expect(trip2.points).toHaveLength(2);
+          expect(trip2.points[0].coordinates).toEqual([
+            -0.1429489005651874, 51.50080870807764,
+          ]);
+          expect(trip2.points[0].circleSize).toBe(0.5);
         });
     });
-    it("handles a query for trip id", () => {
+
+    it("responds with the expected data for user 1 and trip 2", () => {
       return request(app)
         .get("/api/trips/1?trip_id=2")
         .expect(200)
         .then((res) => {
-          let trip = res.body;
-          expect(trip).toEqual(
-            expect.objectContaining({
-              user_id: 1,
-              trip_id: 2,
-              points: expect.arrayContaining([
-                expect.objectContaining({
-                  coordinates: expect.any(Array),
-                  circleSize: expect.any(Number),
-                }),
-              ]),
-            })
-          );
+          const trip = res.body;
+          expect(trip.user_id).toBe(1);
+          expect(trip.trips[0].trip_id).toBe(2);
+          expect(trip.trips[0].points).toHaveLength(2);
+          expect(trip.trips[0].points[0].coordinates).toEqual([
+            -0.1429489005651874, 51.50080870807764,
+          ]);
+          expect(trip.trips[0].points[0].circleSize).toBe(0.5);
         });
     });
+
     it("responds with a status 404 if user not found", () => {
       return Promise.all([request(app).get("/api/trips/999").expect(404)]).then(
         ([res1]) => {
