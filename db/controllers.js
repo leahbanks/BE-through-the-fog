@@ -8,6 +8,7 @@ const {
   sendGeoDrop,
   deleteAllPins,
   deleteOnePin,
+  fetchTrips,
 } = require("./models");
 
 const { Format_coords } = require("./utils");
@@ -101,6 +102,16 @@ const removeOnePin = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const getTrips = (req, res, next) => {
+  const user_id = req.params
+  const trip_id = req.body.trip_id
+  fetchTrips(user_id, trip_id)
+  .then((trips) => {
+    res.status(200).send(trips)
+  })
+  .catch((err) => next(err))
+}
+
 module.exports = {
   getUsers,
   getUsername,
@@ -112,4 +123,5 @@ module.exports = {
   removeAllPins,
   removeOnePin,
   getUserbyID,
+  getTrips,
 };
