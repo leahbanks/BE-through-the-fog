@@ -3,6 +3,7 @@ const app = require("../db/App.js");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/testData");
+const { expect } = require("@jest/globals");
 
 beforeEach(() => {
   return seed(testData);
@@ -447,6 +448,51 @@ describe("app", () => {
         expect(res3.body.msg).toEqual("Bad Request");
         expect(res4.body.msg).toEqual("Bad Request");
       });
+    });
+  });
+  describe("GET /api/trips/:user_id endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/trips/1").expect(200);
+    });
+    it("responds with correct length of trips", () => {
+      return request(app)
+        .get("/api/trips/1")
+        .expect(200)
+        .then((res) => {
+          let trips = res.body;
+          expect(trips.length).toBe(8);
+        });
+    });
+    it("responds with an array of trip objects with the correct properties", () => {
+      return request(app)
+        .get("/api/trips/1")
+        .expect(200)
+        .then((res) => {
+          let trips = res.body;
+          trips.forEach((trip) => {
+            expect(trip.user_id).toBe(1),
+              expect(typeof trip.entry_id).toBe("number"),
+              expect(typeof trip.trip_id).toBe("number"),
+              expect(trip.location).toBeInstanceOf(Array),
+              expect(typeof trip.circle_size).toBe("number");
+          });
+        });
+    });
+    it("handles a query for trip id", () => {
+      return request(app)
+        .get("/api/trips/1?trip_id=2")
+        .expect(200)
+        .then((res) => {
+          let trip = res.body;
+          console.log(trip);
+        });
+    });
+    it("responds with a status 404 if user not found", () => {
+      return Promise.all([request(app).get("/api/trips/999").expect(404)]).then(
+        ([res1]) => {
+          expect(res1.body.msg).toEqual("Not Found");
+        }
+      );
     });
   });
 });
