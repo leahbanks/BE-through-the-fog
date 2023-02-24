@@ -29,6 +29,7 @@ const {
   getTrips,
   postToTrips,
   multiPostToTrips,
+  removeTrip
 } = require("./controllers");
 
 app.get("/api/users", getUsers);
@@ -54,6 +55,8 @@ app.delete("/api/geodata/:geodata_id", removeOnePin);
 app.get("/api/trips/:user_id", getTrips);
 
 app.post("/api/trips/:user_id", multiPostToTrips);
+
+app.delete("/api/trips/:user_id", removeTrip)
 
 //error handling
 
