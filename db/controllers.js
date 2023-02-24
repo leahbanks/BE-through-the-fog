@@ -1,6 +1,7 @@
 const {
   fetchUsers,
   fetchUsername,
+  fetchUserID,
   createUser,
   fetchGeoDataByUser,
   fetchAllGeoData,

@@ -26,7 +26,8 @@
     "pg": "^8.9.0",
     "postgres": "^3.3.3",
     "sql": "^0.78.0",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "swagger-ui-express": "^4.6.1"
   },
   "devDependencies": {
     "husky": "^8.0.2",
