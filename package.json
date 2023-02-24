@@ -9,7 +9,8 @@
     "test": "PGDATABASE=fog_of_war_test jest",
     "prepare": "husky install",
     "start": "node listen.js",
-    "seed-prod": "NODE_ENV=production npm run seed"
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "swagger-autogen": "node ./swagger.js"
   },
   "repository": {
     "type": "git",
@@ -24,16 +25,17 @@
     "express": "^4.18.2",
     "jest-sorted": "^1.0.14",
     "pg": "^8.9.0",
+    "pg-format": "^1.0.4",
     "postgres": "^3.3.3",
     "sql": "^0.78.0",
     "supertest": "^6.3.3",
-    "swagger-ui-express": "^4.6.1",
-    "pg-format": "^1.0.4"
+    "swagger-ui-express": "^4.6.1"
   },
   "devDependencies": {
     "husky": "^8.0.2",
     "jest": "^27.5.1",
-    "jest-extended": "^2.0.0"
+    "jest-extended": "^2.0.0",
+    "swagger-autogen": "^2.23.1"
   },
   "jest": {
     "setupFilesAfterEnv": [

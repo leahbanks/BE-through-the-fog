@@ -1,403 +1,242 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "defaultTitle",
-    "description": "defaultDescription",
+    "title": "Fog of War API",
+    "description": "API docs for endpoints with Fog of War app",
     "version": "0.1"
+  },
+  "host": "https://fog-of-war.onrender.com",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/api/users": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": ["Users"]
+      },
+      "get": {
+        "tags": ["Users"]
+      }
+    },
+    "/api/users/{username}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Users"]
+      }
+    },
+    "/api/users/id/{user_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Users"]
+      }
+    },
+    "/api/users/{user_id}/geodata": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Users"]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": ["Users"]
+      }
+    },
+    "/api/geodata": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Geodata"]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "example": "any"
+                },
+                "img_url": {
+                  "example": "any"
+                },
+                "user_id": {
+                  "example": "any"
+                },
+                "location": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": ["Geodata"]
+      }
+    },
+    "/api/geodata/{geodata_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "geodata_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Geodata"]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "geodata_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": ["Geodata"]
+      }
+    },
+    "/api/trips/{user_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "trip_id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Trips"]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "tags": ["Trips"]
+      }
+    }
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://fog-of-war.onrender.com\n"
     }
   ],
-  "paths": {
-    "/api/geodata": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
+  "tags": [
+    {
+      "name": "Users",
+      "description": "All API endpoints related to Users"
     },
-    "/api/users": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "post": {
-        "description": "Auto generated using Swagger Inspector",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_users_body"
-              },
-              "examples": {
-                "0": {
-                  "value": "{\n      \"username\": \"testcoolname\",\n      \"display_name\": \"veryinsecurepassword\",\n      \"avatar_url\": \"https://www.coolpictures.com/reallycoolimage.jpeg\"\n}"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
+    {
+      "name": "Geodata",
+      "description": "All API endpoints related to Geodata"
     },
-    "/api/users/1/geodata": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
-    },
-    "/api/users/mallionaire": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
-    },
-    "/api/users/id/1": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
-    },
-    "/api/trips/1": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "post": {
-        "description": "Auto generated using Swagger Inspector",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/trips_1_body"
-              },
-              "examples": {
-                "0": {
-                  "value": "{\n      \"user_id\": 1,\n      \"trips\": [\n        {\n          \"trip_id\": 2,\n          \"points\": [\n            {\n              \"coordinates\": [-0.1429489005651874, 51.50080870807764],\n              \"circleSize\": 0.5\n            },\n            {\n              \"coordinates\": [-0.15314146762585779, 51.534935924609954],\n              \"circleSize\": 0.5\n            }\n          ]\n        },\n        {\n          \"trip_id\": 1,\n          \"points\": [\n            {\n              \"coordinates\": [-0.1429489005651874, 51.50080870807764],\n              \"circleSize\": 0.5\n            },\n            {\n              \"coordinates\": [-0.232332305651874, 51.777770807764],\n              \"circleSize\": 0.5\n            }\n          ]\n        }\n      ]\n    }"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
-    },
-    "/api/geodata/1": {
-      "get": {
-        "description": "Auto generated using Swagger Inspector",
-        "responses": {
-          "200": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
-    },
-    "/api/geodata/": {
-      "post": {
-        "description": "Auto generated using Swagger Inspector",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_geodata_body"
-              },
-              "examples": {
-                "0": {
-                  "value": "{\n      \"location\": [-75.1001345742366, 123.34633830198504],\n      \"user_id\": 1,\n      \"comment\": \"Loving the weather\",\n      \"img_url\": \"https://i.imgur.com/KT5sbOH.jpeg\"\n}"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Auto generated using Swagger Inspector",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "type": "string"
-                },
-                "examples": {}
-              }
-            }
-          }
-        },
-        "servers": [
-          {
-            "url": "http://localhost:3000"
-          }
-        ]
-      },
-      "servers": [
-        {
-          "url": "http://localhost:3000"
-        }
-      ]
+    {
+      "name": "Trips",
+      "description": "All API endpoints related to Trips"
     }
-  },
-  "components": {
-    "schemas": {
-      "api_users_body": {
-        "type": "object",
-        "properties": {
-          "avatar_url": {
-            "type": "string"
-          },
-          "display_name": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
-      },
-      "apitrips1_points": {
-        "type": "object",
-        "properties": {
-          "coordinates": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
-          "circleSize": {
-            "type": "number"
-          }
-        }
-      },
-      "apitrips1_trips": {
-        "type": "object",
-        "properties": {
-          "trip_id": {
-            "type": "integer"
-          },
-          "points": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/apitrips1_points"
-            }
-          }
-        }
-      },
-      "trips_1_body": {
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "type": "integer"
-          },
-          "trips": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/apitrips1_trips"
-            }
-          }
-        }
-      },
-      "api_geodata_body": {
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "type": "integer"
-          },
-          "img_url": {
-            "type": "string"
-          },
-          "location": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }
+  ]
 }
