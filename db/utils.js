@@ -5,7 +5,7 @@ const Format_coords = (arr) => {
   return output;
 };
 
-const dummyData = [
+const dummyIncomingData = [
   {
     entry_id: 8,
     trip_id: 2,
@@ -36,7 +36,39 @@ const dummyData = [
   },
 ];
 
-const formatTrips = (payload) => {
+const dummyOutgoingData = {
+  user_id: 1,
+  trips: [
+    {
+      trip_id: 2,
+      points: [
+        {
+          coordinates: [-0.1429489005651874, 51.50080870807764],
+          circleSize: 0.5,
+        },
+        {
+          coordinates: [-0.15314146762585779, 51.534935924609954],
+          circleSize: 0.5,
+        },
+      ],
+    },
+    {
+      trip_id: 1,
+      points: [
+        {
+          coordinates: [-0.1429489005651874, 51.50080870807764],
+          circleSize: 0.5,
+        },
+        {
+          coordinates: [-0.232332305651874, 51.777770807764],
+          circleSize: 0.5,
+        },
+      ],
+    },
+  ],
+};
+
+const formatIncomingTrips = (payload) => {
   const user_id = payload[0].user_id;
   const trips = payload.reduce((accumulator, current) => {
     const trip = accumulator.find((trip) => trip.trip_id === current.trip_id);
@@ -61,4 +93,20 @@ const formatTrips = (payload) => {
   return { user_id, trips };
 };
 
-module.exports = { Format_coords, formatTrips };
+const formatOutgoingTrips = (payload) => {
+  const entries = payload.trips.flatMap(({ trip_id, points }) => {
+    return points.map(({ coordinates, circleSize }, i) => {
+      return {
+        trip_id,
+        user_id: payload.user_id,
+        location: coordinates,
+        circle_size: circleSize,
+      };
+    });
+  });
+  return entries;
+};
+
+console.log(JSON.stringify(formatOutgoingTrips(dummyOutgoingData), null, 1));
+
+module.exports = { Format_coords, formatIncomingTrips };

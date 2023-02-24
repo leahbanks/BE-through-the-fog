@@ -13,7 +13,7 @@ const {
   multiAddToTrips,
 } = require("./models");
 
-const { Format_coords, formatTrips } = require("./utils");
+const { Format_coords, formatIncomingTrips } = require("./utils");
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -109,7 +109,7 @@ const getTrips = (req, res, next) => {
   const trip_id = req.query.trip_id;
   fetchTrips(user_id, trip_id)
     .then((trips) => {
-      res.status(200).send(formatTrips(trips));
+      res.status(200).send(formatIncomingTrips(trips));
     })
     .catch((err) => next(err));
 };
