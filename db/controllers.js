@@ -10,6 +10,7 @@ const {
   deleteOnePin,
   fetchTrips,
   addToTrips,
+  multiAddToTrips,
 } = require("./models");
 
 const { Format_coords, formatTrips } = require("./utils");
@@ -125,6 +126,16 @@ const postToTrips = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const multiPostToTrips = (req, res, next) => {
+  //Abi's function goes here
+  multiAddToTrips(array)
+  .then((response) => {
+    res.status(200).send(response)
+  })
+  .catch((err) => next(err))
+
+}
+
 module.exports = {
   getUsers,
   getUsername,
@@ -138,4 +149,5 @@ module.exports = {
   getUserbyID,
   getTrips,
   postToTrips,
+  multiPostToTrips,
 };

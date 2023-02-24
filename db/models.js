@@ -206,6 +206,24 @@ const addToTrips = (location, user_id, trip_id, circle_size) => {
      console.log(err);
    });
 };
+
+const multiAddToTrips = (array) => {
+  
+  
+    const insertTripDataQueryStr = format(
+      "INSERT INTO trips (location, trip_id, user_id, circle_size) VALUES %L;",
+      array.map(({ location, trip_id, user_id, circle_size }) => [
+        location,
+        trip_id,
+        user_id,
+        circle_size,
+      ])
+    );
+    return db.query(insertTripDataQueryStr)
+    .then(({rows}) => rows)
+  ;
+};
+
   
 
 module.exports = {
@@ -221,4 +239,5 @@ module.exports = {
   fetchUserID,
   fetchTrips,
   addToTrips,
+  multiAddToTrips
 };
