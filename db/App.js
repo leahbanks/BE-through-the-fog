@@ -50,8 +50,6 @@ app.get("/api/trips/:user_id", getTrips);
 
 app.post("/api/trips/:user_id", multiPostToTrips);
 
-app.delete("/api/trips/:user_id", removeTrip);
-
 //error handling
 
 app.use((err, req, res, next) => {
