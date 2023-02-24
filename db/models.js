@@ -1,6 +1,6 @@
 const db = require("./connection");
 const users = require("./data/testData/users");
-const format  = require("pg-format");
+const format = require("pg-format");
 
 const fetchUsers = () => {
   let sqlString = `SELECT * FROM users;`;
@@ -187,44 +187,39 @@ const fetchTrips = (user_id, trip_id) => {
 };
 
 const addToTrips = (location, user_id, trip_id, circle_size) => {
+  const values = [location, user_id, trip_id, circle_size];
 
-  const values = [location, user_id, trip_id, circle_size]
-
-  for (let i = 0; i < values.length; i++) 
-    {if (values[i] === undefined || values[i] === null) 
-      {return Promise.reject({status: 400, msg: "Bad Request"})}} 
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] === undefined || values[i] === null) {
+      return Promise.reject({ status: 400, msg: "Bad Request" });
+    }
+  }
 
   let sqlString = `INSERT INTO trips (location, trip_id, user_id, circle_size)
    VALUES
    ($1, $2, $3, $4)
    returning *;`;
 
-   return db
-   .query(sqlString, values)
-   .then(({ rows }) => rows)
-   .catch((err) => {
-     console.log(err);
-   });
+  return db
+    .query(sqlString, values)
+    .then(({ rows }) => rows)
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const multiAddToTrips = (array) => {
-  
-  
-    const insertTripDataQueryStr = format(
-      "INSERT INTO trips (location, trip_id, user_id, circle_size) VALUES %L;",
-      array.map(({ location, trip_id, user_id, circle_size }) => [
-        location,
-        trip_id,
-        user_id,
-        circle_size,
-      ])
-    );
-    return db.query(insertTripDataQueryStr)
-    .then(({rows}) => rows)
-  ;
+  const insertTripDataQueryStr = format(
+    "INSERT INTO trips (location, trip_id, user_id, circle_size) VALUES %L RETURNING *;",
+    array.map(({ location, trip_id, user_id, circle_size }) => [
+      location,
+      trip_id,
+      user_id,
+      circle_size,
+    ])
+  );
+  return db.query(insertTripDataQueryStr).then(({ rows }) => rows);
 };
-
-  
 
 module.exports = {
   fetchUsername,
@@ -239,5 +234,5 @@ module.exports = {
   fetchUserID,
   fetchTrips,
   addToTrips,
-  multiAddToTrips
+  multiAddToTrips,
 };
