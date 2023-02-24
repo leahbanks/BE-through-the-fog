@@ -131,7 +131,7 @@ const multiPostToTrips = (req, res, next) => {
   const formattedBody = formatPostTrips(req.body);
   multiAddToTrips(formattedBody)
     .then((response) => {
-      res.status(201).send(response);
+      res.status(201).send(formatGetTrips(response));
     })
     .catch((err) => next(err));
 };
