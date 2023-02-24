@@ -13,7 +13,7 @@ const {
   multiAddToTrips,
 } = require("./models");
 
-const { Format_coords, formatIncomingTrips } = require("./utils");
+const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -109,7 +109,7 @@ const getTrips = (req, res, next) => {
   const trip_id = req.query.trip_id;
   fetchTrips(user_id, trip_id)
     .then((trips) => {
-      res.status(200).send(formatIncomingTrips(trips));
+      res.status(200).send(formatGetTrips(trips));
     })
     .catch((err) => next(err));
 };
@@ -127,14 +127,13 @@ const postToTrips = (req, res, next) => {
 };
 
 const multiPostToTrips = (req, res, next) => {
-  //Abi's function goes here
-  multiAddToTrips(array)
-  .then((response) => {
-    res.status(200).send(response)
-  })
-  .catch((err) => next(err))
-
-}
+  const formattedBody = formatPostTrips(req.body);
+  multiAddToTrips(formattedBody)
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = {
   getUsers,

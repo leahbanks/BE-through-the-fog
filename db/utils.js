@@ -68,7 +68,8 @@ const dummyOutgoingData = {
   ],
 };
 
-const formatIncomingTrips = (payload) => {
+// Used when getting from database
+const formatGetTrips = (payload) => {
   const user_id = payload[0].user_id;
   const trips = payload.reduce((accumulator, current) => {
     const trip = accumulator.find((trip) => trip.trip_id === current.trip_id);
@@ -93,13 +94,14 @@ const formatIncomingTrips = (payload) => {
   return { user_id, trips };
 };
 
-const formatOutgoingTrips = (payload) => {
+// Used when posting to database
+const formatPostTrips = (payload) => {
   const entries = payload.trips.flatMap(({ trip_id, points }) => {
     return points.map(({ coordinates, circleSize }, i) => {
       return {
         trip_id,
         user_id: payload.user_id,
-        location: coordinates,
+        location: Format_coords(coordinates),
         circle_size: circleSize,
       };
     });
@@ -107,6 +109,4 @@ const formatOutgoingTrips = (payload) => {
   return entries;
 };
 
-console.log(JSON.stringify(formatOutgoingTrips(dummyOutgoingData), null, 1));
-
-module.exports = { Format_coords, formatIncomingTrips };
+module.exports = { Format_coords, formatGetTrips, formatPostTrips };
