@@ -26,6 +26,10 @@ const {
   removeTrip,
 } = require("./controllers");
 
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
+
 app.get("/api/users", getUsers);
 
 app.get("/api/users/:username", getUsername);
