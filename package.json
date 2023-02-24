@@ -27,13 +27,13 @@
     "postgres": "^3.3.3",
     "sql": "^0.78.0",
     "supertest": "^6.3.3",
-    "swagger-ui-express": "^4.6.1"
+    "swagger-ui-express": "^4.6.1",
+    "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "husky": "^8.0.2",
     "jest": "^27.5.1",
-    "jest-extended": "^2.0.0",
-    "pg-format": "^1.0.4"
+    "jest-extended": "^2.0.0"
   },
   "jest": {
     "setupFilesAfterEnv": [
