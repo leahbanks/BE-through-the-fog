@@ -1,6 +1,6 @@
 const db = require("./connection");
 const users = require("./data/testData/users");
-const { string } = require("pg-format");
+const format  = require("pg-format");
 
 const fetchUsers = () => {
   let sqlString = `SELECT * FROM users;`;
