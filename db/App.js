@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
@@ -9,11 +8,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors());
 app.use(express.json());
-
-app.listen(PORT, function (err) {
-  if (err) console.log("Error in server setup");
-  console.log("Server listening on Port", PORT);
-});
 
 const {
   getUsers,
@@ -29,7 +23,7 @@ const {
   getTrips,
   postToTrips,
   multiPostToTrips,
-  removeTrip
+  removeTrip,
 } = require("./controllers");
 
 app.get("/api/users", getUsers);
@@ -56,7 +50,7 @@ app.get("/api/trips/:user_id", getTrips);
 
 app.post("/api/trips/:user_id", multiPostToTrips);
 
-app.delete("/api/trips/:user_id", removeTrip)
+app.delete("/api/trips/:user_id", removeTrip);
 
 //error handling
 
