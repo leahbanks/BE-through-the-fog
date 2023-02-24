@@ -113,14 +113,14 @@ const getTrips = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const dropOnePin = (req, res, next) => {
+const postToTrips = (req, res, next) => {
   const user_id = req.params.user_id;
   const trip_id = req.body.trip_id;
   const location = Format_coords(req.body.location);
-  const circle_size = req.body.circle_size
+  const circle_size = req.body.circle_size;
   addToTrips(location, user_id, trip_id, circle_size)
     .then((trips) => {
-      res.status(200).send(trips);
+      res.status(201).send(trips);
     })
     .catch((err) => next(err));
 };
@@ -137,5 +137,5 @@ module.exports = {
   removeOnePin,
   getUserbyID,
   getTrips,
-  dropOnePin,
+  postToTrips,
 };
