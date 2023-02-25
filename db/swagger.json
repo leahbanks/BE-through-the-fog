@@ -134,7 +134,7 @@
     },
     "/api/geodata": {
       "get": {
-        "description": "# Only used for generating pins on the map (to save on payload size). \n# \n# When clicked, the pins will then make a GET request to ***/api/geodata/{geodata_id}*** to display the post in question\n \n  **NOTE:** Missing location data in response, needs to be updated to include the location the pin should be dropped.                                                                                                                                                                                                                                    ",
+        "description": "# Only used for generating pins on the map (to save on payload size). \n# \n# When clicked, the pins will then make a GET request to ***/api/geodata/{geodata_id}*** to display the post in question\n \n",
         "parameters": [],
         "responses": {
           "200": {
