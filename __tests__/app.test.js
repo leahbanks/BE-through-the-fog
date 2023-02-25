@@ -1,8 +1,9 @@
 const request = require("supertest");
-const app = require("../db/App");
+const app = require("../db/App.js");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/testData");
+const { expect } = require("@jest/globals");
 
 beforeEach(() => {
   return seed(testData);
@@ -19,7 +20,7 @@ describe("app", () => {
     it("responds with a status 200 if successful", () => {
       return request(app).get("/api/users").expect(200);
     });
-    it("responds with an array of user objects", () => {
+    it("responds with an array of topic objects", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
@@ -27,7 +28,7 @@ describe("app", () => {
           expect(users).toBeInstanceOf(Array);
         });
     });
-    it("responds with an array of user objects with the correct length", () => {
+    it("responds with an array of topic objects with the correct length", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
@@ -35,7 +36,7 @@ describe("app", () => {
           expect(users.length).toBe(4);
         });
     });
-    it("responds with an array of user objects with expected properties and values", () => {
+    it("responds with an array of topic objects with expected properties and values", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
@@ -447,6 +448,66 @@ describe("app", () => {
         expect(res3.body.msg).toEqual("Bad Request");
         expect(res4.body.msg).toEqual("Bad Request");
       });
+    });
+  });
+  describe("GET /api/trips/:user_id endpoint", () => {
+    it("responds with a status 200 if successful", () => {
+      return request(app).get("/api/trips/1").expect(200);
+    });
+    it("responds with correct length of coordinates for trip", () => {
+      return request(app)
+        .get("/api/trips/1")
+        .expect(200)
+        .then((res) => {
+          let trips = res.body.trips[0].points;
+          expect(trips.length).toBe(6);
+        });
+    });
+    it("responds with the expected trips for user 1", () => {
+      return request(app)
+        .get("/api/trips/1")
+        .expect(200)
+        .then((res) => {
+          const trips = res.body.trips;
+          expect(res.body.user_id).toBe(1);
+          expect(trips).toHaveLength(2);
+          const trip1 = trips.find((trip) => trip.trip_id === 1);
+          expect(trip1.points).toHaveLength(6);
+          expect(trip1.points[0].coordinates).toEqual([
+            0.13138741600173248, 51.56144203807303,
+          ]);
+          expect(trip1.points[0].circleSize).toBe(0.5);
+          const trip2 = trips.find((trip) => trip.trip_id === 2);
+          expect(trip2.points).toHaveLength(2);
+          expect(trip2.points[0].coordinates).toEqual([
+            -0.1429489005651874, 51.50080870807764,
+          ]);
+          expect(trip2.points[0].circleSize).toBe(0.5);
+        });
+    });
+
+    it("responds with the expected data for user 1 and trip 2", () => {
+      return request(app)
+        .get("/api/trips/1?trip_id=2")
+        .expect(200)
+        .then((res) => {
+          const trip = res.body;
+          expect(trip.user_id).toBe(1);
+          expect(trip.trips[0].trip_id).toBe(2);
+          expect(trip.trips[0].points).toHaveLength(2);
+          expect(trip.trips[0].points[0].coordinates).toEqual([
+            -0.1429489005651874, 51.50080870807764,
+          ]);
+          expect(trip.trips[0].points[0].circleSize).toBe(0.5);
+        });
+    });
+
+    it("responds with a status 404 if user not found", () => {
+      return Promise.all([request(app).get("/api/trips/999").expect(404)]).then(
+        ([res1]) => {
+          expect(res1.body.msg).toEqual("Not Found");
+        }
+      );
     });
   });
 });
