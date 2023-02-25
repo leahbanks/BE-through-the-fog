@@ -11,22 +11,52 @@
   "paths": {
     "/api/users": {
       "post": {
-        "description": "",
         "parameters": [],
         "responses": {
           "201": {
             "description": "Created"
           }
         },
-        "tags": ["Users"]
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "avatar_url": "https://www.coolpictures.com/reallycoolimage.jpeg",
+                  "username": "JessSmith@gmail.com",
+                  "display_name": "Jess"
+                }
+              }
+            }
+          }
+        },
+        "description": "# Used for creation of new user when registering for an account. Auth system still isn't worked out yet but we believe data relating to authentication should be stored in a private table.\n#  ",
+        "tags": ["Users"],
+        "summary": "Creates a new user"
       },
       "get": {
-        "tags": ["Users"]
+        "tags": ["Users"],
+        "description": "# Shouldn't be many uses for this, if we are storing passwords/tokens etc. they should probably be stored in a private table of the database and not open on any public routes.\n",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "summary": "Gets a list of all users and associated info"
       }
     },
     "/api/users/{username}": {
       "get": {
-        "description": "",
+        "description": "# Mostly intended to be used if a friends list feature was added. This would be used in conjunction with another endpoint to allow a user to add another user by searching their username. \n# \n# Otherwise no real use for this besides maybe being able to find details about a user after finding their geocache post.",
         "parameters": [
           {
             "name": "username",
@@ -40,12 +70,13 @@
             "description": "OK"
           }
         },
-        "tags": ["Users"]
+        "tags": ["Users"],
+        "summary": "Get a user's details by username"
       }
     },
     "/api/users/id/{user_id}": {
       "get": {
-        "description": "",
+        "description": "# Preferable endpoint to use when looking for a specific user. Internally user_id should be used instead of username as it is a more unique identifier without revealing details.",
         "parameters": [
           {
             "name": "user_id",
@@ -59,12 +90,13 @@
             "description": "OK"
           }
         },
-        "tags": ["Users"]
+        "tags": ["Users"],
+        "summary": "Get a user's details by user_id"
       }
     },
     "/api/users/{user_id}/geodata": {
       "get": {
-        "description": "",
+        "description": "# Used primarily for a user to see a list of their own geodata posts.  \n# ***DELETE /api/geodata/{geodataid}*** endpoint can then be used to remove posts that the user no longer wants people to see.",
         "parameters": [
           {
             "name": "user_id",
@@ -78,10 +110,10 @@
             "description": "OK"
           }
         },
-        "tags": ["Users"]
+        "tags": ["Users"],
+        "summary": "Gets all geodata posted by a single user"
       },
       "delete": {
-        "description": "",
         "parameters": [
           {
             "name": "user_id",
@@ -95,22 +127,25 @@
             "description": "No Content"
           }
         },
-        "tags": ["Users"]
+        "tags": ["Users"],
+        "description": "# Used when a user wishes to delete their account or for some other reason remove all of their posts.                                           ",
+        "summary": "Deletes all Geodata associated with specified user_id. "
       }
     },
     "/api/geodata": {
       "get": {
-        "description": "",
+        "description": "# Only used for generating pins on the map (to save on payload size). \n# \n# When clicked, the pins will then make a GET request to ***/api/geodata/{geodata_id}*** to display the post in question\n \n  **NOTE:** Missing location data in response, needs to be updated to include the location the pin should be dropped.                                                                                                                                                                                                                                    ",
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           }
         },
-        "tags": ["Geodata"]
+        "tags": ["Geodata"],
+        "summary": "Gets all geodata stored in database"
       },
       "post": {
-        "description": "",
+        "description": "# Used when user adds a post to the map. \n# \n# It must have the users current location so that it can be added in the correct location on the map when fetched    ",
         "parameters": [
           {
             "name": "body",
@@ -119,16 +154,16 @@
               "type": "object",
               "properties": {
                 "comment": {
-                  "example": "any"
+                  "example": "Loving the weather"
                 },
                 "img_url": {
-                  "example": "any"
+                  "example": "https://i.imgur.com/KT5sbOH.jpeg"
                 },
                 "user_id": {
-                  "example": "any"
+                  "example": 1
                 },
                 "location": {
-                  "example": "any"
+                  "example": [-75.1001345742366, 123.34633830198504]
                 }
               }
             }
@@ -139,12 +174,13 @@
             "description": "Created"
           }
         },
-        "tags": ["Geodata"]
+        "tags": ["Geodata"],
+        "summary": "Creates new Geodata entry in database"
       }
     },
     "/api/geodata/{geodata_id}": {
       "get": {
-        "description": "",
+        "description": "# Used when user clicks a pin on the map, the data can then be returned so that the user can view the comment, photo etc.",
         "parameters": [
           {
             "name": "geodata_id",
@@ -158,10 +194,11 @@
             "description": "OK"
           }
         },
-        "tags": ["Geodata"]
+        "tags": ["Geodata"],
+        "summary": "Gets data associated with specific Geodata ID"
       },
       "delete": {
-        "description": "",
+        "description": "#  Used if a user wishes to remove their own post.\n# Must not be allowed to be called unless user is authorised to delete.",
         "parameters": [
           {
             "name": "geodata_id",
@@ -175,12 +212,13 @@
             "description": "No Content"
           }
         },
-        "tags": ["Geodata"]
+        "tags": ["Geodata"],
+        "summary": "Deletes Geodata entry matching specified geodata_id"
       }
     },
     "/api/trips/{user_id}": {
       "get": {
-        "description": "",
+        "description": "# Used to retrieve all fog data associated with specified user.\n\n# Ideally called when application loads/user logs in successfully.                      ",
         "parameters": [
           {
             "name": "user_id",
@@ -199,16 +237,65 @@
             "description": "OK"
           }
         },
-        "tags": ["Trips"]
+        "tags": ["Trips"],
+        "summary": "Gets a list of all trips by user_id"
       },
       "post": {
-        "description": "",
+        "description": "# Used to post new trip coordinates etc. to database.\n# \n# Data is formatted after being sent into a database friendly format                    \n",
         "parameters": [
           {
             "name": "user_id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "example": 1
+                },
+                "trips": {
+                  "example": [
+                    {
+                      "trip_id": 1,
+                      "points": [
+                        {
+                          "coordinates": [
+                            -0.1429489005651874, 51.50080870807764
+                          ],
+                          "circleSize": 0.5
+                        },
+                        {
+                          "coordinates": [
+                            -0.15314146762585779, 51.534935924609954
+                          ],
+                          "circleSize": 0.5
+                        }
+                      ]
+                    },
+                    {
+                      "trip_id": 2,
+                      "points": [
+                        {
+                          "coordinates": [
+                            -0.1429489005651874, 51.50080870807764
+                          ],
+                          "circleSize": 0.5
+                        },
+                        {
+                          "coordinates": [-0.232332305651874, 51.777770807764],
+                          "circleSize": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -216,7 +303,8 @@
             "description": "Created"
           }
         },
-        "tags": ["Trips"]
+        "tags": ["Trips"],
+        "summary": "Posts new trip data to database"
       }
     }
   },
