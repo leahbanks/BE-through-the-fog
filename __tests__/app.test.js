@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../db/App.js");
+const app = require("../App");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/testData");
@@ -19,7 +19,7 @@ describe("app", () => {
     it("responds with a status 200 if successful", () => {
       return request(app).get("/api/users").expect(200);
     });
-    it("responds with an array of topic objects", () => {
+    it("responds with an array of user objects", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
@@ -27,7 +27,7 @@ describe("app", () => {
           expect(users).toBeInstanceOf(Array);
         });
     });
-    it("responds with an array of topic objects with the correct length", () => {
+    it("responds with an array of user objects with the correct length", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
@@ -35,7 +35,7 @@ describe("app", () => {
           expect(users.length).toBe(4);
         });
     });
-    it("responds with an array of topic objects with expected properties and values", () => {
+    it("responds with an array of user objects with expected properties and values", () => {
       return request(app)
         .get("/api/users")
         .then((res) => {
