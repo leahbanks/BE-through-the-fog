@@ -90,7 +90,7 @@ const fetchGeoDataByUser = (user) => {
 };
 
 const fetchAllGeoData = () => {
-  let sqlString = `SELECT geodata.geodata_id, geodata.user_id FROM geodata;`;
+  let sqlString = `SELECT geodata.geodata_id, geodata.location, geodata.user_id FROM geodata;`;
   return db.query(sqlString).then(({ rows }) => rows);
 };
 
@@ -222,14 +222,18 @@ const multiAddToTrips = (array) => {
 };
 
 const killAll = (user_id) => {
-  const values = [user_id]
+  const values = [user_id];
 
-  sqlString= `DELETE * FROM trips
-  WHERE trips.user_id = $1`
+  sqlString = `DELETE * FROM trips
+  WHERE trips.user_id = $1`;
 
-  return db.query(sqlString, values).then(({rows}) => rows)
-  .catch((err) => {console.log(err)})
-}
+  return db
+    .query(sqlString, values)
+    .then(({ rows }) => rows)
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 module.exports = {
   fetchUsername,
@@ -245,5 +249,5 @@ module.exports = {
   fetchTrips,
   addToTrips,
   multiAddToTrips,
-  killAll, 
+  killAll,
 };
