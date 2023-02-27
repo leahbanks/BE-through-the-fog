@@ -93,8 +93,8 @@ app.use("/auth", authRouter);
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`listening on ${process.env.PORT}`);
-}); */
+}); 
 
 module.exports = app;
