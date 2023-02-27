@@ -1,6 +1,6 @@
 const db = require("./connection");
 const users = require("./data/testData/users");
-const { string } = require("pg-format");
+const format = require("pg-format");
 
 const fetchUsers = () => {
   let sqlString = `SELECT * FROM users;`;
@@ -159,28 +159,77 @@ const deleteOnePin = (query) => {
 };
 
 const fetchTrips = (user_id, trip_id) => {
-    if (isNaN(user_id)) {return Promise.reject({status: 400, msg: "Bad Request"})}
+  const check = parseInt(user_id);
+  if (isNaN(check)) {
+    return Promise.reject({ status: 400, msg: "Bad Request" });
+  }
 
-    let values = [user_id]
+  let values = [user_id];
 
-    let sqlString = `SELECT * FROM trips
-    WHERE trips.user_id = $1`
+  let sqlString = `SELECT * FROM trips
+    WHERE trips.user_id = $1`;
 
-    if (trip_id && !isNaN(trip_id)) {sqlString += ` AND trips.trips_id = $2`, values.push(trip_id)}
+  if (trip_id && !isNaN(trip_id)) {
+    (sqlString += ` AND trips.trip_id = $2`), values.push(trip_id);
+  }
 
-    sqlString += `;`
+  sqlString += `;`;
 
-    return fetchUserID(user_id).then(() => {
-      return db.query(sqlString, values).then(({ rows }) => {
-        if (rows.length === 0) {
-          return Promise.reject({ status: 404, msg: "Not Found" });
-        } else {
-          return rows;
-        }
-      });
+  return fetchUserID(check).then(() => {
+    return db.query(sqlString, values).then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Not Found" });
+      } else {
+        return rows;
+      }
     });
-    }
+  });
+};
 
+const addToTrips = (location, user_id, trip_id, circle_size) => {
+  const values = [location, user_id, trip_id, circle_size];
+
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] === undefined || values[i] === null) {
+      return Promise.reject({ status: 400, msg: "Bad Request" });
+    }
+  }
+
+  let sqlString = `INSERT INTO trips (location, trip_id, user_id, circle_size)
+   VALUES
+   ($1, $2, $3, $4)
+   returning *;`;
+
+  return db
+    .query(sqlString, values)
+    .then(({ rows }) => rows)
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const multiAddToTrips = (array) => {
+  const insertTripDataQueryStr = format(
+    "INSERT INTO trips (location, trip_id, user_id, circle_size) VALUES %L RETURNING *;",
+    array.map(({ location, trip_id, user_id, circle_size }) => [
+      location,
+      trip_id,
+      user_id,
+      circle_size,
+    ])
+  );
+  return db.query(insertTripDataQueryStr).then(({ rows }) => rows);
+};
+
+const killAll = (user_id) => {
+  const values = [user_id]
+
+  sqlString= `DELETE * FROM trips
+  WHERE trips.user_id = $1`
+
+  return db.query(sqlString, values).then(({rows}) => rows)
+  .catch((err) => {console.log(err)})
+}
 
 module.exports = {
   fetchUsername,
@@ -194,4 +243,7 @@ module.exports = {
   deleteOnePin,
   fetchUserID,
   fetchTrips,
+  addToTrips,
+  multiAddToTrips,
+  killAll, 
 };

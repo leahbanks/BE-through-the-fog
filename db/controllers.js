@@ -1,6 +1,7 @@
 const {
   fetchUsers,
   fetchUsername,
+  fetchUserID,
   createUser,
   fetchGeoDataByUser,
   fetchAllGeoData,
@@ -9,9 +10,12 @@ const {
   deleteAllPins,
   deleteOnePin,
   fetchTrips,
+  addToTrips,
+  multiAddToTrips,
+  killAll, 
 } = require("./models");
 
-const { Format_coords } = require("./utils");
+const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
 
 const getUsers = (req, res, next) => {
   fetchUsers().then((users) => {
@@ -23,6 +27,7 @@ const getUsername = (req, res, next) => {
   const query = req.params.username;
   fetchUsername(query)
     .then((username) => {
+      console.log(username)
       res.status(200).send(username);
     })
     .catch((err) => next(err));
@@ -30,11 +35,11 @@ const getUsername = (req, res, next) => {
 
 const getUserbyID = (req, res, next) => {
   const query = req.params.user_id;
-  fetchUserID(query)
-  .then((id) => {
-    res.status(200).send(id)
-  })
-  .catch((err) => err)
+  fetchUserID(parseInt(query))
+    .then((id) => {
+      res.status(200).send(id);
+    })
+    .catch((err) => err);
 };
 
 const sendUser = (req, res, next) => {
@@ -103,13 +108,44 @@ const removeOnePin = (req, res, next) => {
 };
 
 const getTrips = (req, res, next) => {
-  const user_id = req.params
-  const trip_id = req.body.trip_id
+  const user_id = req.params.user_id;
+  const trip_id = req.query.trip_id;
   fetchTrips(user_id, trip_id)
-  .then((trips) => {
-    res.status(200).send(trips)
+    .then((trips) => {
+      res.status(200).send(formatGetTrips(trips));
+    })
+    .catch((err) => next(err));
+};
+
+// Maybe dont need this?
+const postToTrips = (req, res, next) => {
+  const user_id = req.params.user_id;
+  const trip_id = req.body.trip_id;
+  const location = Format_coords(req.body.location);
+  const circle_size = req.body.circle_size;
+  addToTrips(location, user_id, trip_id, circle_size)
+    .then((trips) => {
+      res.status(201).send(trips);
+    })
+    .catch((err) => next(err));
+};
+
+const multiPostToTrips = (req, res, next) => {
+  const formattedBody = formatPostTrips(req.body);
+  multiAddToTrips(formattedBody)
+    .then((response) => {
+      res.status(201).send(formatGetTrips(response));
+    })
+    .catch((err) => next(err));
+};
+
+const removeAllTrips = (req, res, next) => {
+  const user_id = req.params
+  killAll(user_id)
+  .then((response) => {
+    res.status(204).send(response)
   })
-  .catch((err) => next(err))
+  .catch(err => next(err))
 }
 
 module.exports = {
@@ -124,4 +160,7 @@ module.exports = {
   removeOnePin,
   getUserbyID,
   getTrips,
+  postToTrips,
+  multiPostToTrips,
+  removeAllTrips,
 };

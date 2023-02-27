@@ -39,7 +39,7 @@ const seed = ({ geoData, userData, tripData }) => {
         trip_id INT NOT NULL,
         user_id INT REFERENCES users(user_id),
         location DEC[][],
-        circle_size DEC
+        circle_size FLOAT
       );`);
 
       return tripsTablePromise;
