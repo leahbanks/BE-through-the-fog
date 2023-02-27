@@ -72,10 +72,7 @@ app.get("/api/users/:username", getUsername);
 app.get(
   "/api/users/id/:user_id",
   passport.authenticate("session"),
-  getUserbyID,
-  (req, res) => {
-    console.log(req.user);
-  }
+  getUserbyID
 );
 
 app.post("/api/users", sendUser);
