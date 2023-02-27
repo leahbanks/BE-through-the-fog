@@ -222,16 +222,6 @@ const multiAddToTrips = (array) => {
 };
 
 const killAll = (user_id) => {
-<<<<<<< HEAD
-  const values = [user_id]
-
-  sqlString= `DELETE * FROM trips
-  WHERE trips.user_id = $1`
-
-  return db.query(sqlString, values).then(({rows}) => rows)
-  .catch((err) => {console.log(err)})
-}
-=======
   const values = [user_id];
 
   sqlString = `DELETE * FROM trips
@@ -244,7 +234,6 @@ const killAll = (user_id) => {
       console.log(err);
     });
 };
->>>>>>> b7dcd51608d8de39356c31276cba49d3583de2e9
 
 module.exports = {
   fetchUsername,
@@ -260,10 +249,5 @@ module.exports = {
   fetchTrips,
   addToTrips,
   multiAddToTrips,
-<<<<<<< HEAD
-  killAll, 
-};
-=======
   killAll,
 };
->>>>>>> b7dcd51608d8de39356c31276cba49d3583de2e9
