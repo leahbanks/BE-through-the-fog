@@ -69,29 +69,41 @@ app.get("/api/users", getUsers);
 
 app.get("/api/users/:username", getUsername);
 
-app.get(
-  "/api/users/id/:user_id",
-  passport.authenticate("session"),
-  getUserbyID
-);
+app.get("/api/users/profile", passport.authenticate("session"), getUserbyID);
 
 app.post("/api/users", sendUser);
 
-app.get("/api/users/:user_id/geodata", getUserGeoData);
+app.get(
+  "/api/users/me/geodata",
+  passport.authenticate("session"),
+  getUserGeoData
+);
 
-app.get("/api/geodata", getAllGeoData);
+app.get("/api/geodata", passport.authenticate("session"), getAllGeoData);
 
-app.get("/api/geodata/:geodata_id", getGeoDataById);
+app.get(
+  "/api/geodata/:geodata_id",
+  passport.authenticate("session"),
+  getGeoDataById
+);
 
-app.post("/api/geodata", postGeoDrop);
+app.post("/api/geodata", passport.authenticate("session"), postGeoDrop);
 
-app.delete("/api/users/:user_id/geodata", removeAllPins);
+app.delete(
+  "/api/users/me/geodata",
+  passport.authenticate("session"),
+  removeAllPins
+);
 
-app.delete("/api/geodata/:geodata_id", removeOnePin);
+app.delete(
+  "/api/geodata/:geodata_id",
+  passport.authenticate("session"),
+  removeOnePin
+);
 
-app.get("/api/trips/:user_id", getTrips);
+app.get("/api/trips/me", passport.authenticate("session"), getTrips);
 
-app.post("/api/trips/:user_id", multiPostToTrips);
+app.post("/api/trips/me", passport.authenticate("session"), multiPostToTrips);
 
 app.get("/protected", (req, res) => {
   if (req.isAuthenticated()) {

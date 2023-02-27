@@ -138,18 +138,28 @@ const deleteAllPins = (query) => {
   });
 };
 
-const deleteOnePin = (query) => {
+const deleteOnePin = (query, user_id) => {
   const check = parseInt(query.geodata_id);
   if (isNaN(check)) {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
 
-  const values = [query.geodata_id];
+  const geo_id = [query.geodata_id];
 
-  let sqlString = `DELETE FROM geodata
-    WHERE geodata.geodata_id = $1;`;
+  return db
+    .query(
+      `SELECT FROM geodata
+  WHERE geodata.geodata_id = $1;`,
+      geo_id
+    )
+    .then((geoData) => {
+      if (geoData.user_id === user_id) {
+        let sqlString = `DELETE FROM geodata
+        WHERE geodata.geodata_id = $1;`;
 
-  return db.query(sqlString, values).then(({ rows }) => rows);
+        return db.query(sqlString, geo_id).then(({ rows }) => rows);
+      }
+    });
 };
 
 const fetchTrips = (user_id, trip_id) => {
