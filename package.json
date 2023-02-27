@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "start": "node listen.js",
     "seed-prod": "NODE_ENV=production npm run seed",
-    "dev": "nodemon ./db/App.js"
+    "dev": "nodemon ./db/App.js",
+    "swagger-autogen": "node ./swagger.js"
   },
   "repository": {
     "type": "git",
@@ -34,15 +35,17 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-google-oidc": "^0.1.0",
     "pg": "^8.9.0",
+    "pg-format": "^1.0.4",
     "postgres": "^3.3.3",
     "sql": "^0.78.0",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "swagger-ui-express": "^4.6.1"
   },
   "devDependencies": {
     "husky": "^8.0.2",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
-    "pg-format": "^1.0.4"
+    "swagger-autogen": "^2.23.1"
   },
   "jest": {
     "setupFilesAfterEnv": [

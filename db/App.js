@@ -5,6 +5,10 @@ require("dotenv").config();
 const session = require("express-session");
 const passport = require("passport");
 require("../auth");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors());
 app.use(express.json());
