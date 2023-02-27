@@ -12,7 +12,7 @@ const {
   fetchTrips,
   addToTrips,
   multiAddToTrips,
-  killAll, 
+  killAll,
 } = require("./models");
 
 const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
@@ -27,19 +27,24 @@ const getUsername = (req, res, next) => {
   const query = req.params.username;
   fetchUsername(query)
     .then((username) => {
-      console.log(username)
+      console.log(username);
       res.status(200).send(username);
     })
     .catch((err) => next(err));
 };
 
 const getUserbyID = (req, res, next) => {
-  const query = req.params.user_id;
-  fetchUserID(parseInt(query))
-    .then((id) => {
-      res.status(200).send(id);
-    })
-    .catch((err) => err);
+  if (req.isAuthenticated()) {
+    const query = req.user.user_id;
+    console.log(query);
+    fetchUserID(parseInt(query))
+      .then((id) => {
+        res.status(200).send(id);
+      })
+      .catch((err) => next(err)); //
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
 };
 
 const sendUser = (req, res, next) => {
@@ -140,13 +145,13 @@ const multiPostToTrips = (req, res, next) => {
 };
 
 const removeAllTrips = (req, res, next) => {
-  const user_id = req.params
+  const user_id = req.params;
   killAll(user_id)
-  .then((response) => {
-    res.status(204).send(response)
-  })
-  .catch(err => next(err))
-}
+    .then((response) => {
+      res.status(204).send(response);
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = {
   getUsers,
