@@ -10,7 +10,7 @@
     "prepare": "husky install",
     "start": "node listen.js",
     "seed-prod": "NODE_ENV=production npm run seed",
-    "dev": "nodemon ./db/App.js",
+    "dev": "nodemon listen.js",
     "swagger-autogen": "node ./swagger.js"
   },
   "repository": {

@@ -36,12 +36,12 @@ const getUsername = (req, res, next) => {
 const getUserbyID = (req, res, next) => {
   if (req.isAuthenticated()) {
     const query = req.user.user_id;
-    console.log(query);
+    console.log(query, '<-- in controllers');
     fetchUserID(parseInt(query))
       .then((id) => {
         res.status(200).send(id);
       })
-      .catch((err) => next(err)); //
+      .catch((err) => next(err));
   } else {
     res.status(401).json({ msg: "Not authenticated" });
   }
