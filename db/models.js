@@ -15,13 +15,7 @@ const fetchUsername = (query) => {
   const sqlString = `SELECT * from users
     WHERE users.username = $1;`;
 
-  return db.query(sqlString, values).then(({ rows }) => {
-    if (rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Not Found" });
-    } else {
-      return rows;
-    }
-  });
+  return db.query(sqlString, values).then(({ rows }) => rows);
 };
 
 const fetchUserID = (query) => {

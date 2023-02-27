@@ -2,7 +2,7 @@ const passport = require("passport");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 require("dotenv").config();
 const db = require("./db/connection");
-const { fetchUsername, createUser } = require("./db/models");
+const { fetchUserID, createUser, fetchUsername } = require("./db/models");
 
 passport.use(
   new GoogleStrategy(
@@ -25,24 +25,29 @@ passport.use(
         avatar_url,
       };
 
-      fetchUsername(user.username).then((currentUser) => {
-        currentUser;
-
-        // checking if response contains a user obj from our db
-        if (currentUser.length) {
-          done(null, currentUser[0]);
-        } else {
-          // if not, create a new user in the database
-          createUser(user);
-          console.log(user);
-          fetchUsername(user.username)
-            .then((newUser) => {
-              newUser;
-              done(null, newUser[0]);
-            })
-            .catch((err) => console.log(err));
-        }
-      });
+      fetchUsername(user.username)
+        .then((currentUser) => {
+          console.log(currentUser);
+          currentUser;
+          // checking if response contains a user obj from our db
+          if (currentUser.length) {
+            done(null, currentUser[0]);
+          } else {
+            // if not, create a new user in the database
+            createUser(user);
+            console.log(user);
+            fetchUsername(user.username)
+              .then((newUser) => {
+                newUser;
+                done(null, newUser[0]);
+              })
+              .catch((err) => console.log(err));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          done(err, null);
+        });
     }
   )
 );
