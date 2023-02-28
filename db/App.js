@@ -37,8 +37,12 @@ app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     cookie: {
-      secure: process.env.NODE_ENV === "production" ? "false" : "auto",
-      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
+      secure: process.env.NODE_ENV === "production" ? "auto" : "auto",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "fog-of-war-auth.onrender.com"
+          : undefined,
     },
     resave: false,
     saveUninitialized: false,
