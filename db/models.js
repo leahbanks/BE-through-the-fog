@@ -148,17 +148,28 @@ const deleteOnePin = (query, user_id) => {
 
   return db
     .query(
-      `SELECT FROM geodata
-  WHERE geodata.geodata_id = $1;`,
+      `SELECT user_id FROM geodata
+      WHERE geodata_id = $1`,
       geo_id
     )
-    .then((geoData) => {
-      if (geoData.user_id === user_id) {
-        let sqlString = `DELETE FROM geodata
-        WHERE geodata.geodata_id = $1;`;
+    .then((result) => {
+      const geoData = result.rows[0];
 
-        return db.query(sqlString, geo_id).then(({ rows }) => rows);
+      if (!geoData) {
+        return Promise.reject({ status: 404, msg: "Geodata not found" });
       }
+
+      if (geoData.user_id !== user_id) {
+        return Promise.reject({
+          status: 403,
+          msg: "You are not authorized to delete this geodata",
+        });
+      }
+
+      let sqlString = `DELETE FROM geodata
+        WHERE geodata_id = $1`;
+
+      return db.query(sqlString, geo_id).then(({ rows }) => rows);
     });
 };
 
