@@ -126,7 +126,7 @@ const removeAllPins = (req, res, next) => {
 const removeOnePin = (req, res, next) => {
   if (req.isAuthenticated()) {
     const query = req.params;
-    const user_id = req.user.user_id
+    const user_id = req.user.user_id;
     deleteOnePin(query, user_id)
       .then((response) => {
         res.status(204).send(response);
@@ -178,7 +178,7 @@ const multiPostToTrips = (req, res, next) => {
 };
 
 const removeAllTrips = (req, res, next) => {
-  const user_id = req.params;
+  const user_id = req.params.user_id;
   killAll(user_id)
     .then((response) => {
       res.status(204).send(response);
