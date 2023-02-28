@@ -235,6 +235,20 @@ const killAll = (user_id) => {
     });
 };
 
+const fetchScores = () => {
+  
+  const sqlString = `SELECT user_id, COUNT(*)
+  FROM trips
+  GROUP BY user_id
+  LIMIT 10;`
+
+  return db.query(sqlstring)
+  .then(({rows}) => rows)
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
 module.exports = {
   fetchUsername,
   fetchUsers,
@@ -250,4 +264,5 @@ module.exports = {
   addToTrips,
   multiAddToTrips,
   killAll,
+  fetchScores
 };

@@ -13,6 +13,7 @@ const {
   addToTrips,
   multiAddToTrips,
   killAll,
+  fetchScores,
 } = require("./models");
 
 const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
@@ -147,6 +148,14 @@ const removeAllTrips = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const getScores = (req, res, next) => {
+  fetchScores()
+  .then((scores) => {
+    res.status(200).send(scores);
+  })
+  .catch((err) => next(err))
+};
+
 module.exports = {
   getUsers,
   getUsername,
@@ -162,4 +171,5 @@ module.exports = {
   postToTrips,
   multiPostToTrips,
   removeAllTrips,
+  getScores
 };
