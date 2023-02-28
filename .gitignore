@@ -1,4 +1,4 @@
 node_modules
-.env.*
+.env*
 swagger-output*
 swagger.js
