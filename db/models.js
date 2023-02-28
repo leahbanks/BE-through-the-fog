@@ -225,7 +225,7 @@ const killAll = (user_id) => {
   const values = [user_id];
 
   const sqlString = `DELETE * FROM trips
-  WHERE trips.user_id = $1`;
+  WHERE trips.user_id = $1;`;
 
   return db
     .query(sqlString, values)
