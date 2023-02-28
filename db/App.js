@@ -15,6 +15,7 @@ app.use(express.json());
 const {
   getUsers,
   getUsername,
+  getProfile,
   sendUser,
   getUserGeoData,
   getAllGeoData,
@@ -68,7 +69,15 @@ app.use(passport.session());
 
 app.get("/api/users/:username", getUsername);
 
-app.get("/api/profile", passport.authenticate("session"), getUserbyID);
+app.get("/api/users", getUsers);
+
+app.get(
+  "/api/users/id/:user_id",
+  passport.authenticate("session"),
+  getUserbyID
+);
+
+app.get("/api/profile", passport.authenticate("session"), getProfile);
 
 app.post("/api/users", sendUser);
 

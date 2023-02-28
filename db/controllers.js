@@ -33,9 +33,23 @@ const getUsername = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const getUserbyID = (req, res, next) => {
+const getProfile = (req, res, next) => {
   if (req.isAuthenticated()) {
     const query = req.user.user_id;
+    console.log(query);
+    fetchUserID(parseInt(query))
+      .then((id) => {
+        res.status(200).send(id);
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
+};
+
+const getUserbyID = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const query = req.params.user_id;
     console.log(query);
     fetchUserID(parseInt(query))
       .then((id) => {
@@ -205,4 +219,5 @@ module.exports = {
   postToTrips,
   multiPostToTrips,
   removeAllTrips,
+  getProfile,
 };
