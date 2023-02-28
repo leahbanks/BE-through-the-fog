@@ -12,7 +12,7 @@ const {
   fetchTrips,
   addToTrips,
   multiAddToTrips,
-  killAll, 
+  killAll,
 } = require("./models");
 
 const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
@@ -139,13 +139,13 @@ const multiPostToTrips = (req, res, next) => {
 };
 
 const removeAllTrips = (req, res, next) => {
-  const user_id = req.params
+  const user_id = req.params.user_id;
   killAll(user_id)
-  .then((response) => {
-    res.status(204).send(response)
-  })
-  .catch(err => next(err))
-}
+    .then((response) => {
+      res.status(204).send(response);
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = {
   getUsers,
