@@ -314,7 +314,7 @@
         "summary": "Posts new trip data to database"
       },
       "delete": {
-        "description": "",
+        "description": "# Used to delete all trip/fog data from given user_id",
         "parameters": [
           {
             "name": "user_id",
@@ -327,7 +327,9 @@
           "204": {
             "description": "No Content"
           }
-        }
+        },
+        "tags": ["Trips"],
+        "summary": "Deletes all trips by user_id"
       }
     }
   },
