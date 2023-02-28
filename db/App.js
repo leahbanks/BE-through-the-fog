@@ -8,13 +8,12 @@ require("./server/auth");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use(express.json());
 
 const {
   getUsers,
   getUsername,
+  getProfile,
   sendUser,
   getUserGeoData,
   getAllGeoData,
@@ -27,6 +26,7 @@ const {
   postToTrips,
   multiPostToTrips,
   removeTrip,
+  removeAllTrips,
 } = require("./controllers");
 
 // app.get("/", (req, res) => {
@@ -65,11 +65,17 @@ app.use("/auth", authRouter);
   console.log(`listening on ${process.env.PORT}`);
 }); */
 
-app.get("/api/users", getUsers);
-
 app.get("/api/users/:username", getUsername);
 
-app.get("/api/users/profile", passport.authenticate("session"), getUserbyID);
+app.get("/api/users", getUsers);
+
+app.get(
+  "/api/users/id/:user_id",
+  passport.authenticate("session"),
+  getUserbyID
+);
+
+app.get("/api/profile", passport.authenticate("session"), getProfile);
 
 app.post("/api/users", sendUser);
 
@@ -113,11 +119,15 @@ app.get("/protected", (req, res) => {
   }
 });
 
+app.delete("/api/trips/me", removeAllTrips);
+
 //error handling
 
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(err.status).send({ msg: err.msg });
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;

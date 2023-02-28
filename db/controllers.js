@@ -33,9 +33,23 @@ const getUsername = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const getUserbyID = (req, res, next) => {
+const getProfile = (req, res, next) => {
   if (req.isAuthenticated()) {
     const query = req.user.user_id;
+    console.log(query);
+    fetchUserID(parseInt(query))
+      .then((id) => {
+        res.status(200).send(id);
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
+};
+
+const getUserbyID = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const query = req.params.user_id;
     console.log(query);
     fetchUserID(parseInt(query))
       .then((id) => {
@@ -126,7 +140,7 @@ const removeAllPins = (req, res, next) => {
 const removeOnePin = (req, res, next) => {
   if (req.isAuthenticated()) {
     const query = req.params;
-    const user_id = req.user.user_id
+    const user_id = req.user.user_id;
     deleteOnePin(query, user_id)
       .then((response) => {
         res.status(204).send(response);
@@ -178,12 +192,16 @@ const multiPostToTrips = (req, res, next) => {
 };
 
 const removeAllTrips = (req, res, next) => {
-  const user_id = req.params;
-  killAll(user_id)
-    .then((response) => {
-      res.status(204).send(response);
-    })
-    .catch((err) => next(err));
+  if (req.isAuthenticated()) {
+    const user_id = req.user.user_id;
+    killAll(user_id)
+      .then((response) => {
+        res.status(204).send(response);
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
 };
 
 module.exports = {
@@ -201,4 +219,5 @@ module.exports = {
   postToTrips,
   multiPostToTrips,
   removeAllTrips,
+  getProfile,
 };
