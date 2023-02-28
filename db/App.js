@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
-const session = require("cookie-session");
+const session = require("express-session");
 const passport = require("passport");
 require("./server/auth");
 const swaggerUi = require("swagger-ui-express");
