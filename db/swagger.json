@@ -5,15 +5,20 @@
     "description": "API docs for endpoints with Fog of War app",
     "version": "0.1"
   },
-  "securityDefinitions": {
-    "passport": {
-      "type": "oauth2",
-      "description": "Passport Authentication",
-      "flow": "implicit",
-      "authorizationUrl": "/auth/google",
-      "scopes": {
-        "read": "Grants read-only access to user profiles",
-        "write": "Grants write access to user profiles"
+  "components": {
+    "securitySchemes": {
+      "passport": {
+        "type": "oauth2",
+        "description": "Passport Authentication",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "/auth/google",
+            "scopes": {
+              "read": "Grants read-only access to user profiles",
+              "write": "Grants write access to user profiles"
+            }
+          }
+        }
       }
     }
   },
