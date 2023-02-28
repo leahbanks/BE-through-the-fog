@@ -25,6 +25,7 @@ const {
   multiPostToTrips,
   removeTrip,
   removeAllTrips,
+  getScores,
 } = require("./controllers");
 
 app.get("/", (req, res) => {
@@ -56,6 +57,8 @@ app.get("/api/trips/:user_id", getTrips);
 app.post("/api/trips/:user_id", multiPostToTrips);
 
 app.delete("/api/trips/:user_id", removeAllTrips);
+
+app.get("/api/trips/scoreboard", getScores)
 
 //error handling
 
