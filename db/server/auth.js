@@ -1,8 +1,8 @@
 const passport = require("passport");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 require("dotenv").config();
-const db = require("./db/connection");
-const { fetchUserID, createUser, fetchUsername } = require("./db/models");
+const db = require("../connection");
+const { createUser, fetchUsername } = require("../models");
 
 passport.use(
   new GoogleStrategy(
@@ -52,41 +52,6 @@ passport.use(
   )
 );
 
-/*       try {
-        const currentUserQuery = await db.query(
-          "SELECT * FROM users WHERE username=$1",
-          [account.sub]
-        );
-        if (currentUserQuery.rows.length === 0) {
-          //create user
-          await db.query(
-            "INSERT INTO users (username, display_name, avatar_url) VALUES ($1, $2, $3)",
-            [account.sub, account.name, account.picture]
-          );
-          const username = await db.query(
-            "SELECT username FROM users WHERE username=$1",
-            [account.sub]
-          );
-          user = {
-            username,
-            display_name: account.name,
-            avatar_url: account.picture
-          }
-        } else {
-          console.log(currentUserQuery.rows[0].username)
-            user = {
-                username: currentUserQuery.rows[0].username,
-                display_name: currentUserQuery.rows[0].display_name,
-                avatar_url: currentUserQuery.rows[0].avatar_url
-            }
-        }
-        done(null, user);
-      } catch (error) {
-        done(error);
-      }
-    }
-  )
-); */
 
 passport.serializeUser((user, done) => {
   // loads into req.session.passport.user

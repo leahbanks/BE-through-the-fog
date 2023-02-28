@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
 const passport = require("passport");
-require("../auth");
+require("./server/auth");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
@@ -52,14 +52,14 @@ app.use(
   })
 );
 
-const indexRouter = require("../routes/indexRouter");
-app.use("/", indexRouter);
-
-const authRouter = require("../routes/authRouter");
-app.use("/auth", authRouter);
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+const indexRouter = require("./server/routes/indexRouter");
+app.use("/", indexRouter);
+
+const authRouter = require("./server/routes/authRouter");
+app.use("/auth", authRouter);
 
 /* app.listen(process.env.PORT, () => {
   console.log(`listening on ${process.env.PORT}`);
