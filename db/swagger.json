@@ -146,32 +146,33 @@
       },
       "post": {
         "description": "# Used when user adds a post to the map. \n# \n# It must have the users current location so that it can be added in the correct location on the map when fetched    ",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "comment": {
-                  "example": "Loving the weather"
-                },
-                "img_url": {
-                  "example": "https://i.imgur.com/KT5sbOH.jpeg"
-                },
-                "user_id": {
-                  "example": 1
-                },
-                "location": {
-                  "example": [-75.1001345742366, 123.34633830198504]
-                }
-              }
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "comment": "Loving the weather",
+                  "img_url": "https://i.imgur.com/KT5sbOH.jpeg",
+                  "user_id": 1,
+                  "location": [-75.1001345742366, 123.34633830198504]
+                }
+              }
+            }
           }
         },
         "tags": ["Geodata"],
@@ -248,18 +249,29 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "user_id": {
-                  "example": 1
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
                 },
-                "trips": {
-                  "example": [
+                "example": {
+                  "user_id": 1,
+                  "trips": [
                     {
                       "trip_id": 1,
                       "points": [
@@ -297,14 +309,25 @@
               }
             }
           }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
         },
         "tags": ["Trips"],
         "summary": "Posts new trip data to database"
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
       }
     }
   },
