@@ -228,8 +228,8 @@ const multiAddToTrips = (array) => {
 const killAll = (user_id) => {
   const values = [user_id];
 
-  sqlString = `DELETE * FROM trips
-  WHERE trips.user_id = $1`;
+  const sqlString = `DELETE FROM trips
+  WHERE trips.user_id = $1;`;
 
   return db
     .query(sqlString, values)

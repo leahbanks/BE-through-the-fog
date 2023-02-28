@@ -27,6 +27,7 @@ const {
   postToTrips,
   multiPostToTrips,
   removeTrip,
+  removeAllTrips,
 } = require("./controllers");
 
 // app.get("/", (req, res) => {
@@ -112,6 +113,8 @@ app.get("/protected", (req, res) => {
     res.status(401).json({ message: "Not authenticated" });
   }
 });
+
+app.delete("/api/trips/:user_id", removeAllTrips);
 
 //error handling
 
