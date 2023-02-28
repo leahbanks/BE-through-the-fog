@@ -8,8 +8,6 @@ require("../auth");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use(express.json());
 
 const {
@@ -129,5 +127,7 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.status(err.status).send({ msg: err.msg });
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;

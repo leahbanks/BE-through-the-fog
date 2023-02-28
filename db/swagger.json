@@ -5,6 +5,18 @@
     "description": "API docs for endpoints with Fog of War app",
     "version": "0.1"
   },
+  "securityDefinitions": {
+    "passport": {
+      "type": "oauth2",
+      "description": "Passport Authentication",
+      "flow": "implicit",
+      "authorizationUrl": "/auth/google",
+      "scopes": {
+        "read": "Grants read-only access to user profiles",
+        "write": "Grants write access to user profiles"
+      }
+    }
+  },
   "host": "https://fog-of-war.onrender.com",
   "basePath": "/",
   "schemes": ["http"],
@@ -45,18 +57,23 @@
       },
       "get": {
         "tags": ["Users"],
-        "description": "# Shouldn't be many uses for this, if we are storing passwords/tokens etc. they should probably be stored in a private table of the database and not open on any public routes.\n",
+        "description": "# Returns some basic information about users (no passwords etc.)",
         "responses": {
           "200": {
             "description": "OK"
           }
         },
-        "summary": "Gets a list of all users and associated info"
+        "summary": "Gets a list of all users and associated info",
+        "security": [
+          {
+            "passport": ["read"]
+          }
+        ]
       }
     },
     "/api/users/{username}": {
       "get": {
-        "description": "# Mostly intended to be used if a friends list feature was added. This would be used in conjunction with another endpoint to allow a user to add another user by searching their username. \n# \n# Otherwise no real use for this besides maybe being able to find details about a user after finding their geocache post.",
+        "description": "# Returns a display name and avatar_url by username. used for getting info about a specific user",
         "parameters": [
           {
             "name": "username",
@@ -71,7 +88,12 @@
           }
         },
         "tags": ["Users"],
-        "summary": "Get a user's details by username"
+        "summary": "Get a user's details by username",
+        "security": [
+          {
+            "passport": ["read"]
+          }
+        ]
       }
     },
     "/api/users/id/{user_id}": {
@@ -94,41 +116,61 @@
         "summary": "Get a user's details by user_id"
       }
     },
-    "/api/users/{user_id}/geodata": {
+    "/api/profile": {
       "get": {
-        "description": "# Used primarily for a user to see a list of their own geodata posts.  \n# ***DELETE /api/geodata/{geodataid}*** endpoint can then be used to remove posts that the user no longer wants people to see.",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "description": "# Return's logged in user's data. User ID is obtained from authentication middleware",
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": ["Users"],
+        "summary": "Get a user's details by user_id",
+        "security": [
+          {
+            "OAuth2": ["read"]
+          }
+        ]
+      }
+    },
+    "securityDefinitions": {
+      "OAuth2": {
+        "type": "oauth2",
+        "authorizationUrl": "https://example.com/oauth2/authorize",
+        "flow": "implicit",
+        "scopes": {
+          "read": "Grants read-only access to user profiles"
+        }
+      }
+    },
+    "/api/users/me/geodata": {
+      "get": {
+        "description": "# Returns all of logged in user's Geodata posts  \n# ***DELETE /api/geodata/{geodata_id}*** endpoint can then be used to remove posts that the user no longer wants people to see.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Users"],
         "summary": "Gets all geodata posted by a single user"
       },
       "delete": {
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Users"],
-        "description": "# Used when a user wishes to delete their account or for some other reason remove all of their posts.                                           ",
+        "description": "# Used when a user wishes to delete their account or for some other reason remove all of their posts, user must be authenticated to do this.                                           ",
         "summary": "Deletes all Geodata associated with specified user_id. "
       }
     },
@@ -142,10 +184,15 @@
           }
         },
         "tags": ["Geodata"],
-        "summary": "Gets all geodata stored in database"
+        "summary": "Gets all geodata stored in database",
+        "security": [
+          {
+            "passport": ["read"]
+          }
+        ]
       },
       "post": {
-        "description": "# Used when user adds a post to the map. \n# \n# It must have the users current location so that it can be added in the correct location on the map when fetched    ",
+        "description": "# Used when user adds a post to the map. \n# \n# It must have the users current location and user_id so that it can be added in the correct location on the map when fetched    ",
         "parameters": [],
         "responses": {
           "201": {
@@ -193,40 +240,32 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Geodata"],
         "summary": "Gets data associated with specific Geodata ID"
       },
       "delete": {
-        "description": "#  Used if a user wishes to remove their own post.\n# Must not be allowed to be called unless user is authorised to delete.",
-        "parameters": [
-          {
-            "name": "geodata_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "description": "# Used if a user wishes to remove their own post.\n# Must not be allowed to be called unless user is authorised to delete.",
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Geodata"],
         "summary": "Deletes Geodata entry matching specified geodata_id"
       }
     },
-    "/api/trips/{user_id}": {
+    "/api/trips/me": {
       "get": {
-        "description": "# Used to retrieve all fog data associated with specified user.\n\n# Ideally called when application loads/user logs in successfully.                      ",
+        "description": "# Used to retrieve all fog data associated with logged in user.\n\n# Ideally called when application loads/user logs in successfully.                      ",
         "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "trip_id",
             "in": "query",
@@ -236,6 +275,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Trips"],
@@ -243,17 +285,13 @@
       },
       "post": {
         "description": "# Used to post new trip coordinates etc. to database.\n# \n# Data is formatted after being sent into a database friendly format                    \n",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "requestBody": {
@@ -314,18 +352,14 @@
         "summary": "Posts new trip data to database"
       },
       "delete": {
-        "description": "# Used to delete all trip/fog data from given user_id",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "description": "# Used to delete all trip/fog data from logged in user's account",
+        "parameters": [],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "tags": ["Trips"],
@@ -333,11 +367,6 @@
       }
     }
   },
-  "servers": [
-    {
-      "url": "https://fog-of-war.onrender.com\n"
-    }
-  ],
   "tags": [
     {
       "name": "Users",
