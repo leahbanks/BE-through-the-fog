@@ -38,7 +38,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     cookie: {
       secure: process.env.NODE_ENV === "production" ? "false" : "auto",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
     },
     resave: false,
     saveUninitialized: false,
