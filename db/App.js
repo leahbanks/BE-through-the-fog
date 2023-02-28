@@ -66,11 +66,9 @@ app.use(passport.session());
   console.log(`listening on ${process.env.PORT}`);
 }); */
 
-app.get("/api/users", getUsers);
-
 app.get("/api/users/:username", getUsername);
 
-app.get("/api/users/profile", passport.authenticate("session"), getUserbyID);
+app.get("/api/profile", passport.authenticate("session"), getUserbyID);
 
 app.post("/api/users", sendUser);
 
@@ -114,7 +112,7 @@ app.get("/protected", (req, res) => {
   }
 });
 
-app.delete("/api/trips/:user_id", removeAllTrips);
+app.delete("/api/trips/me", removeAllTrips);
 
 //error handling
 

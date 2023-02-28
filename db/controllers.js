@@ -178,12 +178,16 @@ const multiPostToTrips = (req, res, next) => {
 };
 
 const removeAllTrips = (req, res, next) => {
-  const user_id = req.params.user_id;
-  killAll(user_id)
-    .then((response) => {
-      res.status(204).send(response);
-    })
-    .catch((err) => next(err));
+  if (req.isAuthenticated()) {
+    const user_id = req.user.user_id;
+    killAll(user_id)
+      .then((response) => {
+        res.status(204).send(response);
+      })
+      .catch((err) => next(err));
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
 };
 
 module.exports = {
