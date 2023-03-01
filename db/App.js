@@ -33,11 +33,13 @@ const {
 //   res.redirect("/api-docs");
 // });
 
+app.enable("trust proxy");
+
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     cookie: {
-      secure: process.env.NODE_ENV === "production" ? "auto" : "auto",
+      secure: process.env.NODE_ENV === "production" ? "true" : "auto",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       domain:
         process.env.NODE_ENV === "production"
