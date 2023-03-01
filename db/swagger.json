@@ -371,6 +371,7 @@
         "summary": "Deletes all trips by user_id"
       }
     },
+
     "/home": {
       "get": {
         "description": "# Returns whether user is logged in or not, can be used in front end to check whether to display sign in page?",
@@ -473,6 +474,14 @@
             "passport-local": []
           }
         ]
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "summary": "Use Google authentication to log in",
+        "description": "# Should open google auth window. User is then authenticated using google and returned to /home.",
+        "parameters": [],
+        "responses": {}
       }
     }
   },
