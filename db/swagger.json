@@ -397,27 +397,29 @@
         "tags": ["Authentication"],
         "summary": "Creates a new user account",
         "description": "# Creates a new user account with the given credentials",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "display_name": {
-                  "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
                 },
-                "username": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
+                "example": {
+                  "display_name": "User",
+                  "username": "user",
+                  "password": "password"
                 }
               }
             }
           }
-        ],
+        },
+        "parameters": [],
         "responses": {
           "201": {
             "description": "User account created successfully"
@@ -433,24 +435,28 @@
         "tags": ["Authentication"],
         "summary": "Logs in a user",
         "description": "# Signs in a user with the given credentials",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
                 },
-                "password": {
-                  "type": "string"
+                "example": {
+                  "username": "user",
+                  "password": "password"
                 }
               }
             }
           }
-        ],
+        },
+        "parameters": [],
         "responses": {
           "200": {
             "description": "User signed in successfully"
