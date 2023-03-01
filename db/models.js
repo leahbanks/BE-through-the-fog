@@ -12,7 +12,7 @@ const fetchUsername = (query) => {
   if (typeof values[0] !== "string") {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
-  const sqlString = `SELECT username, display_name, avatar_url FROM users
+  const sqlString = `SELECT user_id, username, display_name, avatar_url FROM users
     WHERE users.username = $1;`;
 
   return db.query(sqlString, values).then(({ rows }) => rows);
@@ -20,6 +20,7 @@ const fetchUsername = (query) => {
 
 const fetchUserID = (query) => {
   const values = [query];
+  console.log(query);
   if (typeof values[0] !== "number") {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
