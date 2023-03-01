@@ -477,9 +477,10 @@
       }
     },
     "/auth/google": {
+      "tags": ["Authentication"],
       "get": {
         "summary": "Use Google authentication to log in",
-        "description": "# Should open google auth window. User is then authenticated using google and returned to /home.",
+        "description": "# Should open google auth window (wont work on try it out). User is then authenticated using google and returned to /home.",
         "parameters": [],
         "responses": {}
       }
