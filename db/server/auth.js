@@ -29,7 +29,6 @@ passport.use(
 
       fetchUsername(user.username)
         .then((currentUser) => {
-          console.log(currentUser, "hello");
           currentUser;
           // checking if response contains a user obj from our db
           if (currentUser.length) {
