@@ -18,9 +18,13 @@ const {
 const { Format_coords, formatGetTrips, formatPostTrips } = require("./utils");
 
 const getUsers = (req, res, next) => {
-  fetchUsers().then((users) => {
-    res.status(200).send(users);
-  });
+  if (req.isAuthenticated()) {
+    fetchUsers().then((users) => {
+      res.status(200).send(users);
+    });
+  } else {
+    res.status(401).json({ msg: "Not authenticated" });
+  }
 };
 
 const getUsername = (req, res, next) => {

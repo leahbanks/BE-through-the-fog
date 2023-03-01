@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -34,6 +35,7 @@
     "passport-google": "^0.3.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-google-oidc": "^0.1.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.9.0",
     "pg-format": "^1.0.4",
     "postgres": "^3.3.3",

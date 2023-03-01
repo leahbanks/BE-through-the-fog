@@ -16,7 +16,8 @@ const seed = ({ geoData, userData, tripData }) => {
 				user_id SERIAL PRIMARY KEY,
 				display_name VARCHAR,
         username VARCHAR,
-        avatar_url VARCHAR
+        avatar_url VARCHAR,
+        password TEXT
 			);`);
       return usersTablePromise;
     })
@@ -46,11 +47,12 @@ const seed = ({ geoData, userData, tripData }) => {
     })
     .then(() => {
       const insertUsersQueryStr = format(
-        "INSERT INTO users (username, display_name, avatar_url) VALUES %L;",
-        userData.map(({ username, display_name, avatar_url }) => [
+        "INSERT INTO users (username, display_name, avatar_url, password) VALUES %L;",
+        userData.map(({ username, display_name, avatar_url, password }) => [
           username,
           display_name,
           avatar_url,
+          password,
         ])
       );
       const usersPromise = db.query(insertUsersQueryStr);

@@ -1,4 +1,6 @@
 const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 require("dotenv").config();
 const db = require("../connection");
@@ -52,6 +54,33 @@ passport.use(
   )
 );
 
+passport.use(
+  new LocalStrategy(async function (username, pass, done) {
+    try {
+      // Searches database for the username username
+      const user = await db.query("SELECT * FROM users WHERE username=$1", [
+        username,
+      ]);
+
+      // If the username is not in the database, return a message(better practice not to indicate whether the email or password is incorrect for security reasons)
+      if (!user.rows.length) {
+        return done(null, false, { message: "Incorrect email or password." });
+      }
+
+      // If the username is in the database, compare the password sent in with the hashed password in the database using bcrypt
+      const match = await bcrypt.compare(pass, user.rows[0].password);
+      if (!match) {
+        return done(null, false, { message: "Incorrect email or password." });
+      }
+
+      // If the password matches, return the user object, minus the password!! (very important)
+      const { password, ...userObject } = user.rows[0];
+      return done(null, userObject);
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
 
 passport.serializeUser((user, done) => {
   // loads into req.session.passport.user

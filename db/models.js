@@ -3,7 +3,7 @@ const users = require("./data/testData/users");
 const format = require("pg-format");
 
 const fetchUsers = () => {
-  let sqlString = `SELECT username, display_name, avatar_url FROM users;`;
+  let sqlString = `SELECT user_id, username, display_name, avatar_url FROM users;`;
   return db.query(sqlString).then(({ rows }) => rows);
 };
 
@@ -24,7 +24,7 @@ const fetchUserID = (query) => {
   if (typeof values[0] !== "number") {
     return Promise.reject({ status: 400, msg: "Bad Request" });
   }
-  const sqlString = `SELECT username, display_name, avatar_url from users
+  const sqlString = `SELECT user_id, username, display_name, avatar_url from users
     WHERE users.user_id = $1;`;
 
   return db.query(sqlString, values).then(({ rows }) => {

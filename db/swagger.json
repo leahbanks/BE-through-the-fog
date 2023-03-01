@@ -370,6 +370,104 @@
         "tags": ["Trips"],
         "summary": "Deletes all trips by user_id"
       }
+    },
+    "/auth/home": {
+      "get": {
+        "description": "# Returns whether user is logged in or not, can be used in front end to check whether to display sign in page?",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "Logs out user",
+        "description": "# Logs out the current user and then returns to /home, which displays the loggedIn: false property",
+        "parameters": [],
+        "responses": {},
+        "tags": ["Authentication"]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Creates a new user account",
+        "description": "# Creates a new user account with the given credentials",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "display_name": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User account created successfully"
+          },
+          "400": {
+            "description": "Invalid input parameters"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Logs in a user",
+        "description": "# Signs in a user with the given credentials",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User signed in successfully"
+          },
+          "400": {
+            "description": "Invalid input parameters"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "passport-local": []
+          }
+        ]
+      }
     }
   },
   "tags": [
@@ -384,6 +482,10 @@
     {
       "name": "Trips",
       "description": "All API endpoints related to Trips"
+    },
+    {
+      "name": "Authentication",
+      "description": "All API endpoints related to Authentication"
     }
   ]
 }
