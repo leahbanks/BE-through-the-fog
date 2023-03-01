@@ -58,7 +58,7 @@ app.post("/api/trips/:user_id", multiPostToTrips);
 
 app.delete("/api/trips/:user_id", removeAllTrips);
 
-app.get("/api/trips/scoreboard", getScores)
+app.get("/api/scoreboard", getScores)
 
 //error handling
 
