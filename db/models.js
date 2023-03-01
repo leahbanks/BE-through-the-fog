@@ -244,7 +244,7 @@ const fetchScores = () => {
   ORDER BY trip_count DESC
   LIMIT 10;`
 
-  return db.query(sqlstring)
+  return db.query(sqlString)
   .then(({rows}) => rows)
   .catch((err) => {
     console.log(err);
