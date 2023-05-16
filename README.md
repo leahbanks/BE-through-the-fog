@@ -2,7 +2,7 @@
 
 ## 📝 Description
 
-Through the Fog API was built to serve as a back end to our React Native app. It is built using Javascropt, Node, Express and PostgreSQL in addition Google Auth and Bcrypt to ensure the security of user data. 
+Through the Fog API was built to serve as a back end to our React Native app. It is built using Javascript, Node, Express and PostgreSQL in addition Google Auth and Bcrypt to ensure the security of user data. 
 
 The end points are secured with Google Auth and can be viewed and tested on Swagger [here](https://fog-of-war-auth.onrender.com/api-docs/). 
 
